@@ -20,12 +20,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 use CoffeeCode\Router\Router;
-
+// localhost/acme-3am/api
 $route = new Router(url("api"),":");
 
 $route->namespace("Source\Controller");
-
+// localhost/acme-3am/api/hello
 $route->get("/hello", "Api:hello");
+$route->get("/products/list", "Products:productsList");
+$route->get("/users/list", "Users:usersList");
 
 $route->dispatch();
 

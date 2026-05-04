@@ -7,7 +7,7 @@ class Api
 
     public function hello()
     {
-        echo "olá, mundo!";
+        echo "Olá, mundo! Estamos com a API funcionando, graças a Deus!";
     }
 
 }
