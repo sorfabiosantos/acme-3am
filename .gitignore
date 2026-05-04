@@ -1,4 +1,5 @@
 /.idea
+/api/.env
 /api/vendor
 /storage
 composer.lock
