@@ -17,16 +17,6 @@ class Products extends Api
     {
         $product = new Product();
 
-        if($product->productById($data["productId"])){
-            $this->call(200,"success","Produto encontrado","success")
-                ->back(array ($product->productById($data["productId"])));
-        } else {
-            $this->call(404,"not_found","Produto não encontrado","error")->back();
-        }
-
-        //var_dump($product->productById($data["productId"]));
-        //$this->call(200,"success","Produto encontrado","success")
-        //    ->back(array ($product->productById($data["productId"])));
     }
 
 }
