@@ -430,6 +430,8 @@ Trate os seguintes cenários:
 
 ## Exercício 07 — Listando todas as categorias de FAQ
 
+Para essa atividade crie as seguintes namespaces: `App\Controller\Faqs` e `App\Models\Faqs`.
+
 ### Contextualizando
 
 Você vai iniciar o desenvolvimento do módulo de **Perguntas Frequentes (FAQ)** do sistema. Antes de trabalhar com as perguntas em si, é necessário listar as categorias disponíveis — pois toda pergunta pertence a uma categoria. O frontend usará essa listagem para exibir um menu de filtros ou popular um `<select>` no formulário de cadastro.
@@ -1001,49 +1003,3 @@ Trate os seguintes cenários:
 > 💡 **Dica:** Antes do soft delete, faça um `SELECT COUNT(*) FROM faqs WHERE faqs_category_id = :id AND active = 1`. Se o resultado for maior que `0`, retorne `400` com a mensagem de bloqueio. Só execute o `UPDATE` se a categoria estiver vazia de FAQs ativos.
 
 ---
-
-## Scripts SQL — Populando as tabelas de FAQ
-
-Execute os inserts abaixo no banco `db-acme-manha` para ter dados de teste disponíveis durante o desenvolvimento dos exercícios.
-
-```sql
--- Categorias de FAQ
-LOCK TABLES `faqs_categories` WRITE;
-/*!40000 ALTER TABLE `faqs_categories` DISABLE KEYS */;
-INSERT INTO `faqs_categories` (`id`, `name`) VALUES
-(1, 'Pedidos'),
-(2, 'Pagamentos'),
-(3, 'Entregas'),
-(4, 'Devoluções e Trocas'),
-(5, 'Cadastro e Conta');
-/*!40000 ALTER TABLE `faqs_categories` ENABLE KEYS */;
-UNLOCK TABLES;
-
--- Perguntas frequentes (FAQs)
-LOCK TABLES `faqs` WRITE;
-/*!40000 ALTER TABLE `faqs` DISABLE KEYS */;
-INSERT INTO `faqs` (`id`, `faqs_category_id`, `question`, `answer`) VALUES
--- Pedidos (category_id = 1)
-(1,  1, 'Como faço para acompanhar o status do meu pedido?',       'Acesse a área "Meus Pedidos" no seu perfil e clique sobre o número do pedido para ver o status detalhado.'),
-(2,  1, 'Posso cancelar um pedido após a confirmação?',             'Pedidos podem ser cancelados em até 1 hora após a confirmação, desde que ainda não tenham sido separados para envio.'),
-(3,  1, 'É possível alterar o endereço de entrega após o pedido?', 'Sim, contate nosso suporte em até 2 horas após a compra com o número do pedido e o novo endereço.'),
--- Pagamentos (category_id = 2)
-(4,  2, 'Quais formas de pagamento são aceitas?',                   'Aceitamos cartão de crédito (Visa, Mastercard, Elo), boleto bancário e Pix.'),
-(5,  2, 'Em quantas parcelas posso parcelar minha compra?',         'Compras com cartão de crédito podem ser parceladas em até 12 vezes sem juros para pedidos acima de R$ 200,00.'),
-(6,  2, 'Meu pagamento foi recusado. O que fazer?',                 'Verifique os dados do cartão e o limite disponível. Se o problema persistir, tente outra forma de pagamento ou entre em contato com seu banco.'),
-(7,  2, 'O boleto venceu. Posso gerar um novo?',                    'Sim. Acesse "Meus Pedidos", localize o pedido em questão e clique em "Gerar novo boleto". O prazo de pagamento será de 1 dia útil.'),
--- Entregas (category_id = 3)
-(8,  3, 'Qual o prazo de entrega?',                                  'O prazo varia conforme a região e o produto. Após a confirmação do pagamento, o prazo estimado é exibido no resumo do pedido.'),
-(9,  3, 'Meu pedido está atrasado. O que fazer?',                    'Se o prazo estimado já passou, acesse "Meus Pedidos" e clique em "Falar com suporte" para abrir um chamado de rastreamento.'),
-(10, 3, 'Posso retirar meu pedido na loja?',                         'Sim. Selecione a opção "Retirar na loja" durante o checkout e aguarde o e-mail de confirmação de disponibilidade.'),
--- Devoluções e Trocas (category_id = 4)
-(11, 4, 'Como solicito a troca de um produto?',                      'Acesse "Meus Pedidos", selecione o produto e clique em "Solicitar troca". O prazo para solicitação é de até 7 dias após o recebimento.'),
-(12, 4, 'Qual o prazo para devolução?',                              'De acordo com o Código de Defesa do Consumidor, você tem até 7 dias corridos após o recebimento para desistir da compra.'),
-(13, 4, 'Quem paga o frete da devolução?',                           'Caso o produto apresente defeito, o frete de devolução é por nossa conta. Em caso de desistência, o frete é de responsabilidade do cliente.'),
--- Cadastro e Conta (category_id = 5)
-(14, 5, 'Como altero minha senha?',                                  'Acesse "Minha Conta" > "Segurança" > "Alterar senha". Você receberá um e-mail de confirmação para concluir a alteração.'),
-(15, 5, 'Esqueci minha senha. Como recuperá-la?',                    'Na tela de login, clique em "Esqueci minha senha" e informe o e-mail cadastrado. Você receberá um link de redefinição em até 5 minutos.');
-/*!40000 ALTER TABLE `faqs` ENABLE KEYS */;
-UNLOCK TABLES;
-```
-

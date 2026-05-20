@@ -75,4 +75,16 @@ class Products extends Api
             ->back($response);
     }
 
+    public function update(array $data)
+    {
+        echo "Atualizar Produto";
+        var_dump($data);
+    }
+
+    public function delete(array $data)
+    {
+        echo "Deletar Produto";
+        var_dump($data);
+    }
+
 }
