@@ -1,6 +1,6 @@
 <?php
 
-namespace source\Models;
+namespace Source\Models;
 
 class User
 {

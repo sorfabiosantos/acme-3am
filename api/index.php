@@ -20,23 +20,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 use CoffeeCode\Router\Router;
-// localhost/acme-3am/api
+
 $route = new Router(url("api"),":");
 
 $route->namespace("Source\Controller");
 
 // Início - Exercícios - Desafios
-$route->get("/products/list", "Products:productsList");
-$route->get("/products/list/{productId}","Products:productsListById");
-$route->post("/products","Products:create");
-$route->put("/products/{productId}","Products:update");
-$route->delete("/products/{productId}","Products:delete");
-
-$route->get("/products-categories/list", "ProductsCategories:productsCategoryList");
+$route->group("/products");
+$route->get("/list/{product_id}","Products:listById"); // select by id
+$route->get("/list","Products:listAll"); // select all
+$route->get("/list/paginator/{page}/{per_page}","Products:listPaginator"); // select all
+$route->post("/","Products:insert"); // insert
+$route->put("/{product_id}","Products:update"); // update
+$route->delete("/{product_id}","Products:delete"); // update
+$route->group(null);
 // Fim - Exercícios - Desafios
-
-$route->get("/hello", "Api:hello");
-$route->get("/users/list", "Users:usersList");
 
 $route->dispatch();
 
