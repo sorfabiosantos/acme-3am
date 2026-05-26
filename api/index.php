@@ -32,7 +32,7 @@ $route->get("/list","Products:listAll"); // select all
 $route->get("/list/paginator/{page}/{per_page}","Products:listPaginator"); // select all
 $route->post("/","Products:insert"); // insert
 $route->put("/{product_id}","Products:update"); // update
-$route->delete("/{product_id}","Products:delete"); // update
+$route->delete("/{product_id}","Products:delete"); // delete
 $route->group(null);
 // Fim - Exercícios - Desafios
 
