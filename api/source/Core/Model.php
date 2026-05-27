@@ -21,7 +21,9 @@ abstract class Model
 
     public function selectById(int $id): bool
     {
-        $query = "SELECT * FROM {$this->table} WHERE {$this->primaryKey} = :id LIMIT 1";
+        $query = "SELECT * 
+                  FROM {$this->table} 
+                  WHERE {$this->primaryKey} = :id LIMIT 1";
 
         try {
             $stmt = Connect::getInstance()->prepare($query);
