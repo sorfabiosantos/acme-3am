@@ -36,7 +36,7 @@ $route->put("/{product_id}","Products:update"); // update
 $route->delete("/{product_id}","Products:delete"); // update
 $route->group(null);
 // Categorias de FAQs
-$route->group("/faqs-categories");
+$route->group("/products-categories");
 
 $route->group(null);
 // FAQs
