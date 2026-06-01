@@ -25,6 +25,12 @@ $route = new Router(url("api"),":");
 
 $route->namespace("Source\Controller");
 
+$route->group("/users");
+$route->post("/login","Users:auth"); // login
+$route->post("/register","Users:register"); // register
+$route->put("/","Users:update");
+$route->group(null);
+
 // Início - Exercícios - Desafios
 // Produtos
 $route->group("/products");

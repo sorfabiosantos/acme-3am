@@ -2,12 +2,40 @@
 
 namespace Source\Controller;
 
+use Source\Models\User;
+use Source\Core\JWTToken;
+
 class Api
 {
-
-    public function hello()
+    public function authToken (int $typeId): bool
     {
-        echo "Olá, mundo! Estamos com a API funcionando, graças a Deus!";
+
+        $header = getallheaders();
+
+        $token = $header["token"] ?? $header['Authorization'];
+        if(str_starts_with($token, 'Bearer ')){
+            $token = substr($token, 7);
+        }
+        if(!$token){
+            return false;
+        }
+
+        $jwt = new JWTToken();
+
+        $jwtToken = $jwt->decode($token);
+
+        if(!$jwtToken){
+            return false;
+        }
+
+        //var_dump($jwtToken->data->id, $jwtToken->data->email);
+        $user = new User();
+        if(!$user->permissionVerify($jwtToken->data->email, $typeId)){
+            return false;
+        }
+
+        return true;
+
     }
 
     protected function call (int $code, ?string $status = null, ?string $message = null, ?string $type = null): Api
