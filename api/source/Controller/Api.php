@@ -12,12 +12,14 @@ class Api
 
         $header = getallheaders();
 
-        $token = $header["token"] ?? $header['Authorization'];
-        if(str_starts_with($token, 'Bearer ')){
-            $token = substr($token, 7);
-        }
+        $token = $header["token"] ?? $header['Authorization'] ?? null;
+
         if(!$token){
             return false;
+        }
+
+        if(str_starts_with($token, 'Bearer ')){
+            $token = substr($token, 7);
         }
 
         $jwt = new JWTToken();
