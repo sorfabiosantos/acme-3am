@@ -154,6 +154,7 @@ class Users extends Api
 
     }
 
+    // Valida somente Nome e Email, mas pode ser alterada para validar mais campos
     private function validateNameEmail(array $data): bool
     {
         if(!isset($data["name"],$data["email"]) ||
