@@ -8,7 +8,7 @@ ob_start();
 
 require  __DIR__ . "/vendor/autoload.php";
 
-// os headers abaixo são necessários para permitir o acesso a API por clientes externos ao domínio
+// os headers abaixo são necessários para permitir o acesso à API por clientes externos ao domínio
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: *");
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
@@ -70,8 +70,7 @@ if ($route->error()) {
         "type" => "error",
         "status" => "not_found",
         "message" => "O recurso solicitado não existe."
-    ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
-
+    ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 }
 
 ob_end_flush();
