@@ -15,8 +15,9 @@ class User extends Model
     private ?string $email;
     private ?string $password;
     private ?string $photo;
-    private ?string $token = null;
     private ?string $active;
+
+    private ?string $token = null;
 
     public function __construct(?int $id = null, ?int $typeId = null, ?string $name = null, ?string $email = null, ?string $password = null, ?string $photo = null)
     {
@@ -141,9 +142,8 @@ class User extends Model
         // definir quais informações irão par o payload do token
         $this->token = $jwt->encode([
             "id" => $user->id,
-            "typeId" => $user->type_id,
             "name" => $user->name,
-            "email" => $user->email,
+            "email" => $user->email
         ]);
         return true;
     }
