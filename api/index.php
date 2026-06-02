@@ -26,11 +26,12 @@ $route = new Router(url("api"),":");
 $route->namespace("Source\Controller");
 
 $route->group("/users");
-$route->post("/register","Users:register"); // register
-$route->post("/login","Users:auth"); // login
-$route->post("/login-admin","Users:authAdmin"); // login
-$route->put("/update","Users:update");
-$route->put("/update-admin","Users:updateAdmin");
+$route->post("/register","Users:register"); // Registrar usuário comum
+$route->post("/register-admin","Users:registerAdmin"); // Registrar usuário admin NÃO IMPLEMENTADO
+$route->post("/login","Users:auth"); // login de usuário comum
+$route->post("/login-admin","Users:authAdmin"); // login de usuário admin
+$route->put("/update","Users:update"); // update de usuário comum
+$route->put("/update-admin","Users:updateAdmin"); // update de usuário admin
 $route->group(null);
 
 // Início - Exercícios - Desafios
