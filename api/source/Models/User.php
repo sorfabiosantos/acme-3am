@@ -15,7 +15,7 @@ class User extends Model
     private ?string $email;
     private ?string $password;
     private ?string $photo;
-    private ?string $token;
+    private ?string $token = null;
     private ?string $active;
 
     public function __construct(?int $id = null, ?int $typeId = null, ?string $name = null, ?string $email = null, ?string $password = null, ?string $photo = null)
@@ -116,11 +116,12 @@ class User extends Model
         return true;
     }
 
-    public function login (string $email, string $password): bool
+    public function login (string $email, string $password, int $typeId = 2): bool
     {
-        $query = "SELECT * FROM {$this->table} WHERE email = :email";
+        $query = "SELECT * FROM {$this->table} WHERE email = :email AND type_id = :typeId";
         $stmt = Connect::getInstance()->prepare($query);
         $stmt->bindParam(":email", $email);
+        $stmt->bindParam(":typeId", $typeId);
         $stmt->execute();
         if($stmt->rowCount() == 0){
             $this->errorMessage = "Email não cadastrado";

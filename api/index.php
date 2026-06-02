@@ -26,9 +26,11 @@ $route = new Router(url("api"),":");
 $route->namespace("Source\Controller");
 
 $route->group("/users");
-$route->post("/login","Users:auth"); // login
 $route->post("/register","Users:register"); // register
-$route->put("/","Users:update");
+$route->post("/login","Users:auth"); // login
+$route->post("/login-admin","Users:authAdmin"); // login
+$route->put("/update","Users:update");
+$route->put("/update-admin","Users:updateAdmin");
 $route->group(null);
 
 // Início - Exercícios - Desafios
@@ -60,12 +62,13 @@ $route->dispatch();
 /** ERROR REDIRECT */
 if ($route->error()) {
     header('Content-Type: application/json; charset=UTF-8');
-    //http_response_code(404);
+    http_response_code(404);
 
     echo json_encode([
         "code" => 404,
+        "type" => "error",
         "status" => "not_found",
-        "message" => "URL não encontrada"
+        "message" => "O recurso solicitado não existe."
     ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
 
 }

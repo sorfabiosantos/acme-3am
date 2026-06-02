@@ -12,7 +12,7 @@ class Api
 
         $header = getallheaders();
 
-        $token = $header["token"] ?? $header['Authorization'] ?? null;
+        $token = $header["token"] ?? $header['Authorization'] ?? $header['authorization'] ?? null;
 
         if(!$token){
             return false;
