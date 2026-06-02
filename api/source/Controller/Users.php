@@ -156,7 +156,9 @@ class Users extends Api
 
     private function validateNameEmail(array $data): bool
     {
-        if($this->validateNameEmail($data)) {
+        if(!isset($data["name"],$data["email"]) ||
+            empty($data["name"]) || empty($data["email"]) ||
+            !filter_var($data["email"], FILTER_VALIDATE_EMAIL)) {
             return false;
         }
         return true;
