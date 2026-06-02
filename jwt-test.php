@@ -9,9 +9,9 @@ $jwt = new JWTToken();
 var_dump($jwt);
 
 $jwtKey = $jwt->encode([
-    "id" => 123,
-    "name" => "John Doe",
-    "email" => "john@gmail.com"
+    "id" => 39726497326,
+    "name" => "Fábio Santos",
+    "email" => "fabio@gmail.com"
     ]
 );
 
