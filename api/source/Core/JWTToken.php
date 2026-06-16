@@ -2,10 +2,10 @@
 
 namespace Source\Core;
 
+use DateTimeImmutable;
+use Exception;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
-use \DateTimeImmutable;
-use \Exception;
 
 class JWTToken
 {

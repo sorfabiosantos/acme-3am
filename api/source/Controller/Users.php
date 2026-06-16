@@ -130,6 +130,7 @@ class Users extends Api
                 "error")->back();
             return;
         }
+        var_dump($this->userAuthId);
         // fazer o update do usuário agora autenticado
         $this->call(200,"success","Usuário atualizado com sucesso","success")->back();
     }

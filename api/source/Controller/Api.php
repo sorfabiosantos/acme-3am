@@ -7,6 +7,9 @@ use Source\Core\JWTToken;
 
 class Api
 {
+
+    protected int $userAuthId = 0;
+
     public function authToken (int $typeId): bool
     {
 
@@ -35,6 +38,8 @@ class Api
         if(!$user->permissionVerify($jwtToken->data->email, $typeId)){
             return false;
         }
+
+        $this->userAuthId = $jwtToken->data->id;
 
         return true;
 
