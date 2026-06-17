@@ -34,6 +34,11 @@ $route->post("/login-admin","Users:authAdmin"); // login de usuário admin
 $route->put("/update-admin","Users:updateAdmin"); // update de usuário admin
 $route->group(null);
 
+$route->group("/address");
+$route->post("/register","Addresses:register"); // Registrar usuário comum
+$route->put("/update","Addresses:update"); // Alterar usuário comum
+$route->group(null);
+
 // Início - Exercícios - Desafios
 // Produtos
 $route->group("/products");
