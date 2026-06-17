@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `db-acme-manha` /*!40100 DEFAULT CHARACTER SET utf8mb3 */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `db-acme-manha`;
 -- MySQL dump 10.13  Distrib 8.0.45, for Win64 (x86_64)
 --
 -- Host: localhost    Database: db-acme-manha
@@ -14,6 +16,57 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `addresses`
+--
+
+DROP TABLE IF EXISTS `addresses`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `addresses` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
+  `street` varchar(45) NOT NULL,
+  `number` varchar(45) NOT NULL,
+  `active` tinyint(1) DEFAULT '1',
+  PRIMARY KEY (`id`),
+  KEY `fk_addresses_users1_idx` (`user_id`),
+  CONSTRAINT `fk_addresses_users1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `addresses`
+--
+
+LOCK TABLES `addresses` WRITE;
+/*!40000 ALTER TABLE `addresses` DISABLE KEYS */;
+/*!40000 ALTER TABLE `addresses` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `courses`
+--
+
+DROP TABLE IF EXISTS `courses`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `courses` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `courses`
+--
+
+LOCK TABLES `courses` WRITE;
+/*!40000 ALTER TABLE `courses` DISABLE KEYS */;
+/*!40000 ALTER TABLE `courses` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `faqs`
@@ -85,7 +138,7 @@ CREATE TABLE `products` (
   PRIMARY KEY (`id`),
   KEY `fk_products_products_categories1_idx` (`category_id`),
   CONSTRAINT `fk_products_products_categories1` FOREIGN KEY (`category_id`) REFERENCES `products_categories` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=62 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -94,7 +147,7 @@ CREATE TABLE `products` (
 
 LOCK TABLES `products` WRITE;
 /*!40000 ALTER TABLE `products` DISABLE KEYS */;
-INSERT INTO `products` VALUES (1,1,'Mouse Logitech M170',89.90,1),(2,3,'iPhone 19',30000.00,1),(3,1,'Monitor LG 24 Polegadas IPS Full HD',899.00,1),(4,2,'Notebook Dell Inspiron 15 i5 16GB 512GB SSD',4299.00,1),(5,2,'Notebook Lenovo IdeaPad 3 Ryzen 5 8GB 256GB SSD',3199.00,1),(6,2,'MacBook Air M2 13 Polegadas 256GB',7999.00,1),(7,3,'Smartphone Samsung Galaxy A55 128GB',2199.00,1),(8,3,'iPhone 15 128GB',5999.00,1),(9,3,'Smartphone Motorola Edge 50 Fusion 256GB',2499.00,1),(10,4,'Headset HyperX Cloud Stinger 2',329.90,1),(11,4,'Webcam Logitech C920s Full HD',449.90,1),(12,4,'Caixa de Som JBL Go 4 Bluetooth',279.90,1),(13,5,'SSD Kingston NV2 1TB NVMe',399.90,1),(14,5,'HD Externo Seagate 2TB USB 3.0',499.90,1),(15,5,'Pen Drive Sandisk Ultra 128GB USB 3.0',89.90,1),(16,6,'Roteador TP-Link Archer AX53 Wi-Fi 6',449.90,1),(17,6,'Switch TP-Link TL-SG108 8 Portas Gigabit',219.90,1),(18,6,'Cabo de Rede Cat6 2m',29.90,1),(19,7,'Impressora Epson EcoTank L3250',1199.00,1),(20,7,'Nobreak Intelbras XNB 720VA',679.90,1),(21,7,'Filtro de Linha Clamper 5 Tomadas',89.90,1),(22,8,'Cadeira Gamer ThunderX3 EC3',1199.00,1),(23,8,'Mesa de Escritorio 120cm com 2 Gavetas',699.00,0),(24,8,'Suporte Articulado para Monitor ELG F80N',289.90,0),(61,3,'iPhone 19',30000.00,1);
+INSERT INTO `products` VALUES (1,1,'Mouse Logitech M170',89.90,1),(2,3,'iPhone 19',30000.00,1),(3,1,'Monitor LG 24 Polegadas IPS Full HD',899.00,1),(4,2,'Notebook Dell Inspiron 15 i5 16GB 512GB SSD',4299.00,1),(5,2,'Notebook Lenovo IdeaPad 3 Ryzen 5 8GB 256GB SSD',3199.00,1),(6,2,'MacBook Air M2 13 Polegadas 256GB',7999.00,1),(7,3,'Smartphone Samsung Galaxy A55 128GB',2199.00,1),(8,3,'iPhone 15 128GB',5999.00,1),(9,3,'Smartphone Motorola Edge 50 Fusion 256GB',2499.00,1),(10,4,'Headset HyperX Cloud Stinger 2',329.90,1),(11,4,'Webcam Logitech C920s Full HD',449.90,1),(12,4,'Caixa de Som JBL Go 4 Bluetooth',279.90,1),(13,5,'SSD Kingston NV2 1TB NVMe',399.90,1),(14,5,'HD Externo Seagate 2TB USB 3.0',499.90,1),(15,5,'Pen Drive Sandisk Ultra 128GB USB 3.0',89.90,1),(16,6,'Roteador TP-Link Archer AX53 Wi-Fi 6',449.90,1),(17,6,'Switch TP-Link TL-SG108 8 Portas Gigabit',219.90,1),(18,6,'Cabo de Rede Cat6 2m',29.90,1),(19,7,'Impressora Epson EcoTank L3250',1199.00,1),(20,7,'Nobreak Intelbras XNB 720VA',679.90,1),(21,7,'Filtro de Linha Clamper 5 Tomadas',89.90,1),(22,8,'Cadeira Gamer ThunderX3 EC3',1199.00,1),(23,8,'Mesa de Escritorio 120cm com 2 Gavetas',699.00,0),(24,8,'Suporte Articulado para Monitor ELG F80N',289.90,0),(61,3,'iPhone 19',30000.00,1),(62,2,'DELL Inspirion 5567 - Novo',10000.00,1);
 /*!40000 ALTER TABLE `products` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -141,7 +194,7 @@ CREATE TABLE `users` (
   PRIMARY KEY (`id`),
   KEY `fk_users_user_types_idx` (`type_id`),
   CONSTRAINT `fk_users_user_types` FOREIGN KEY (`type_id`) REFERENCES `users_types` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -150,7 +203,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (7,2,'Fábio Santos','fabiosantos@ifsul.edu.br','$2y$10$4SAEgSOLVK8SBT9VP4T4lObFmZBPv48WLLMDb/Wsh5MC63zd6GBOO',NULL,1),(8,1,'Fábio Santos','fabio3268@gmail.com','$2y$10$4SAEgSOLVK8SBT9VP4T4lObFmZBPv48WLLMDb/Wsh5MC63zd6GBOO',NULL,1),(9,2,'Fábio Santos','fabiosantoss@ifsul.edu.br','$2y$10$m4qhdrlL751xaO3yNOAzCuO7wsXCky4QkWTlHb2OzQ6xSTs8owNgW',NULL,1);
+INSERT INTO `users` VALUES (7,2,'Fábio Santos','fabiosantos@ifsul.edu.br','$2y$10$4SAEgSOLVK8SBT9VP4T4lObFmZBPv48WLLMDb/Wsh5MC63zd6GBOO',NULL,1),(8,1,'Fábio Santos','fabio3268@gmail.com','$2y$10$4SAEgSOLVK8SBT9VP4T4lObFmZBPv48WLLMDb/Wsh5MC63zd6GBOO',NULL,1),(9,1,'Fábio Santos','fabio_admin@ifsul.edu.br','$2y$10$m4qhdrlL751xaO3yNOAzCuO7wsXCky4QkWTlHb2OzQ6xSTs8owNgW',NULL,1),(10,2,'Fábio Santos','fabio_user@ifsul.edu.br','$2y$10$1htAu.5VcTrXRME5SZERU.W7MadCukwsOdYNq/wjYmeATOUTrnn1.',NULL,1);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -188,4 +241,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-06-02 10:13:40
+-- Dump completed on 2026-06-17  7:44:49
