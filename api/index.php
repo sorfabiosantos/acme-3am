@@ -37,6 +37,7 @@ $route->group(null);
 $route->group("/address");
 $route->post("/register","Addresses:register"); // Registrar usuário comum
 $route->put("/update","Addresses:update"); // Alterar usuário comum
+$route->get("/by-user","Addresses:selectByUser"); // Alterar usuário comum
 $route->group(null);
 
 // Início - Exercícios - Desafios

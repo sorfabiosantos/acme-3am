@@ -7,14 +7,15 @@ use Source\Models\Address;
 
 class Addresses extends Api
 {
-    public function register (array $data): void
+    public function register(array $data): void
     {
         if(!$this->authToken(2)){
             $this->call(401, "unauthorized", "Acesso negado", "error")->back();
             return;
         }
-        // persistência de dados
+        //persistência de dados
         $address = new Address(null, $this->userAuthId, $data["street"], $data["number"]);
+        //var_dump($address);
         if(!$address->insert()){
             $this->call(500, "internal_server_error", "Alguma coisa aconteceu - {$address->getErrorMessage()}", "error")->back();
             return;
@@ -28,13 +29,25 @@ class Addresses extends Api
             $this->call(401, "unauthorized", "Acesso negado", "error")->back();
             return;
         }
-
+        //persistência de dados
         $address = new Address(null, $this->userAuthId, $data["street"], $data["number"]);
         if(!$address->updateById($data["id"])){
             $this->call(500, "internal_server_error", "Alguma coisa aconteceu - {$address->getErrorMessage()}", "error")->back();
             return;
         }
         $this->call(200, "success", "Endereço alterado com sucesso", "success")->back();
+    }
+
+    public function selectByUser(): void
+    {
+        if(!$this->authToken(2)){
+            $this->call(401, "unauthorized", "Acesso negado", "error")->back();
+            return;
+        }
+        //var_dump($this->userAuthId);
+        $address = new Address();
+        $this->call(200, "success", "Lista de endereçoos,", "success")
+            ->back($address->selectByUserId($this->userAuthId));
     }
 
 }
