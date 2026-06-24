@@ -64,6 +64,11 @@ $route->group("/faqs-categories");
 $route->group(null);
 // Fim - Exercícios - Desafios
 
+// Verificador de sintaxe para a prova
+$route->group("/syntax-check");
+$route->get("/","SyntaxCheck:check");
+$route->group(null);
+
 $route->dispatch();
 
 /** ERROR REDIRECT */
