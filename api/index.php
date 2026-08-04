@@ -56,11 +56,20 @@ $route->group("/products-categories");
 $route->group(null);
 // FAQs
 $route->group("/faqs");
-
+$route->get("/","Faqs:listAll");
+$route->get("/{faqId}","Faqs:listById");
+$route->get("/category/{categoryId}","Faqs:listByCategory");
+$route->post("/","Faqs:insert");
+$route->put("/{faqId}","Faqs:update");
+$route->delete("/{faqId}","Faqs:delete");
 $route->group(null);
 // Categorias de FAQs
 $route->group("/faqs-categories");
-
+$route->get("/","FaqsCategories:listAll");
+$route->get("/{categoryId}","FaqsCategories:listById");
+$route->post("/","FaqsCategories:insert");
+$route->put("/{categoryId}","FaqsCategories:update");
+$route->delete("/{categoryId}","FaqsCategories:delete");
 $route->group(null);
 // Fim - Exercícios - Desafios
 
