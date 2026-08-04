@@ -67,7 +67,10 @@ function initFAQ() {
   document.querySelectorAll('.faq-question').forEach((btn) => {
     btn.addEventListener('click', () => {
       const expanded = btn.getAttribute('aria-expanded') === 'true';
-      const answer = btn.nextElementSibling;
+      const faqItem = btn.closest('.faq-item');
+      const answer = faqItem ? faqItem.querySelector('.faq-answer') : null;
+
+      if (!answer) return;
 
       btn.setAttribute('aria-expanded', !expanded);
       answer.classList.toggle('open', !expanded);
