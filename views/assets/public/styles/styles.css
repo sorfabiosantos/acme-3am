@@ -163,7 +163,7 @@ body {
 }
 
 /* ---- FAQ Accordion ---- */
-.faq-item {
+dt.faq-item {
   border-bottom: 1px solid var(--color-gray-100);
 }
 

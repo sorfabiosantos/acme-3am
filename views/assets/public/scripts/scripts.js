@@ -67,8 +67,8 @@ function initFAQ() {
   document.querySelectorAll('.faq-question').forEach((btn) => {
     btn.addEventListener('click', () => {
       const expanded = btn.getAttribute('aria-expanded') === 'true';
-      const faqItem = btn.closest('.faq-item');
-      const answer = faqItem ? faqItem.querySelector('.faq-answer') : null;
+      const dt = btn.closest('dt');
+      const answer = dt ? dt.nextElementSibling : null;
 
       if (!answer) return;
 
