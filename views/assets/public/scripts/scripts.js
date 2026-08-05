@@ -26,6 +26,11 @@ async function fetchFAQs() {
         `;
     listFaqs.appendChild(faqItem);
   });
+
+  // Inicializa os ícones Lucide nos novos elementos
+  if (typeof lucide !== 'undefined') {
+    lucide.createIcons();
+  }
 }
 
 
