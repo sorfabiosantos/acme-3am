@@ -2,7 +2,36 @@
    Running Power — Interactive Scripts
    ===================================================== */
 
+// http://localhost:8080/acme-3am/api/faqs/category/6
+async function fetchFAQs() {
+  const response = await fetch("http://localhost:8080/acme-3am/api/faqs/category/6");
+  //console.log(response);
+  const faqs = await response.json();
+  //console.log(faqs.data);
+  const listFaqs = document.querySelector("#list-faqs");
+
+  faqs.data.forEach(faq => {
+    console.log(faq.answer, faq.question);
+    const faqItem = document.createElement("faq-item");
+    faqItem.innerHTML = `
+        <dt>
+            <button class="faq-question" aria-expanded="false">
+               <span>${faq.question}</span>
+               <i data-lucide="plus" class="w-5 h-5 faq-icon text-surface-gray" aria-hidden="true"></i>
+            </button>
+        </dt>
+            <dd class="faq-answer">
+            <p>${faq.answer}</p>
+        </dd>
+        `;
+    listFaqs.appendChild(faqItem);
+  });
+}
+
+
+
 document.addEventListener('DOMContentLoaded', () => {
+
   initScrollAnimations();
   initMobileMenu();
   initFAQ();
@@ -64,18 +93,26 @@ function initMobileMenu() {
 
 /* ---- FAQ Accordion ---- */
 function initFAQ() {
-  document.querySelectorAll('.faq-question').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const expanded = btn.getAttribute('aria-expanded') === 'true';
-      const item = btn.closest('faq-item');
-      const answer = item ? item.querySelector('.faq-answer') : null;
+  const listFaqs = document.querySelector("#list-faqs");
+  if (!listFaqs) return;
 
-      if (!answer) return;
+  // Event delegation: escuta cliques no <dl> para capturar botões adicionados dinamicamente
+  listFaqs.addEventListener("click", (e) => {
+    const btn = e.target.closest(".faq-question");
+    if (!btn) return;
 
-      btn.setAttribute('aria-expanded', !expanded);
-      answer.classList.toggle('open', !expanded);
-    });
+    const expanded = btn.getAttribute("aria-expanded") === "true";
+    const item = btn.closest("faq-item");
+    const answer = item ? item.querySelector(".faq-answer") : null;
+
+    if (!answer) return;
+
+    btn.setAttribute("aria-expanded", !expanded);
+    answer.classList.toggle("open", !expanded);
   });
+
+  fetchFAQs();
+
 }
 
 /* ---- Smooth Scroll for anchor links ---- */
