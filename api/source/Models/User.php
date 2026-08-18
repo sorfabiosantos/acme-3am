@@ -15,7 +15,7 @@ class User extends Model
     private ?string $email;
     private ?string $password;
     private ?string $photo;
-    private ?string $active;
+    private ?int $active;
 
     private ?string $token = null;
 
@@ -30,7 +30,7 @@ class User extends Model
 
         $this->table = 'users'; // nome da tabela do banco
         $this->primaryKey = 'id'; // nome da chave primária da tabela
-        $this->fillable = ['typeId', 'name', 'email', 'password', 'photo']; // camelCase
+        $this->fillable = ['typeId', 'name', 'email', 'password', 'photo', 'active']; // camelCase
     }
 
     public function getId(): ?int
@@ -119,7 +119,7 @@ class User extends Model
 
     public function login (string $email, string $password, int $typeId = 2): bool
     {
-        $query = "SELECT * FROM {$this->table} WHERE email = :email AND type_id = :typeId";
+        $query = "SELECT * FROM {$this->table} WHERE email = :email AND type_id = :typeId AND active = 1";
         $stmt = Connect::getInstance()->prepare($query);
         $stmt->bindParam(":email", $email);
         $stmt->bindParam(":typeId", $typeId);
@@ -138,19 +138,21 @@ class User extends Model
         $this->name = $user->name;
         $this->email = $user->email;
         $this->photo = $user->photo;
+        $this->active = (int)$user->active;
         $jwt = new JWTToken();
         // definir quais informações irão par o payload do token
         $this->token = $jwt->encode([
             "id" => $user->id,
             "name" => $user->name,
-            "email" => $user->email
+            "email" => $user->email,
+            "type_id" => $user->type_id
         ]);
         return true;
     }
 
     public function permissionVerify (string $email, $typeId): bool
     {
-        $query = "SELECT * FROM {$this->table} WHERE email = :email AND type_id = :typeId";
+        $query = "SELECT * FROM {$this->table} WHERE email = :email AND type_id = :typeId AND active = 1";
         $stmt = Connect::getInstance()->prepare($query);
         $stmt->bindParam(":email", $email);
         $stmt->bindParam(":typeId", $typeId);

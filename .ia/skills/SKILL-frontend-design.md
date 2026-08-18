@@ -1,143 +1,82 @@
-# SKILL: Frontend Design
+# Skill de Frontend Design
 
-> Skill operacional — define **como** a IA deve gerar código de frontend neste projeto.  
-> Para **o que** planejar, consulte `.ia/agents/AGENT-frontend-design.md`.
+## Aplicação
 
----
+Use esta skill ao criar ou editar HTML, CSS ou JavaScript nas áreas `public`,
+`app`, `admin` e `runner`, ou componentes compartilhados em `_common`.
 
-## Quando aplicar esta skill
+Antes de editar, leia:
 
-Aplique sempre que precisar criar ou editar:
-- Páginas HTML das áreas `public`, `app` ou `admin`
-- Arquivos CSS de estilo
-- Arquivos JavaScript de comportamento de interface
-- Componentes ou layouts reutilizáveis em `_common`
+1. `.ia/copilot-instructions.md`;
+2. `.ia/agents/AGENTS.md`;
+3. `.ia/agents/AGENT-frontend-design.md`.
 
----
+## Regras de implementação
 
-## Passo a passo ao gerar uma tela
+- Use HTML semântico: `header`, `nav`, `main`, `section`, `article`, `aside`,
+  `form`, `fieldset`, `footer`, `ul` e `ol`.
+- Use `<table>` somente para dados genuinamente tabulares, como a lista
+  administrativa de FAQs.
+- Não use `<div>` como estrutura de layout quando um elemento semântico for
+  apropriado.
+- CSS deve ficar em arquivo separado; evite estilos inline.
+- JavaScript deve usar classes e módulos ES.
+- Registre eventos no JavaScript; nunca use `onclick`, `onsubmit` ou similares.
+- Use `document.querySelector` e `document.querySelectorAll`.
+- Não use jQuery.
+- Use `HttpClientBase` por meio de classes de domínio em `_common/classes`.
+- Não confie em dados de sessão do navegador para autorizar ações.
 
-1. **Identifique a área** (`public`, `app` ou `admin`) e use a pasta correta em `views/assets/<area>/`.
-2. **Leia o AGENT** (`.ia/agents/AGENT-frontend-design.md`) para entender contexto, componentes e navegação definidos pelo estudante.
-3. **Crie o HTML** usando exclusivamente tags semânticas. Veja o padrão de estrutura abaixo.
-4. **Separe o CSS** em arquivo `.css` próprio; nunca use `style` inline.
-5. **Separe o JS** em arquivo `.js` próprio; nunca use eventos inline no HTML.
-6. **Marque mocks estáticos** com comentários `<!-- TODO: substituir por dado real da API -->` para facilitar a integração futura.
+## Isolamento por área
 
----
+| Área | Entrada | Assets |
+|---|---|---|
+| Pública | `index.html` | `views/assets/public/` |
+| Assessor | `app/index.html` | `views/assets/app/` |
+| Admin | `admin/index.html` | `views/assets/admin/` |
+| Corredor | `runner/index.html` | `views/assets/runner/` |
 
-## Estrutura HTML obrigatória
+Não coloque componentes específicos do corredor no dashboard do assessor.
+Recursos compartilhados devem ir em `_common/`.
 
-```html
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>[Título da Tela] — [Nome do Sistema]</title>
-  <link rel="stylesheet" href="../_common/styles/base.css">
-  <link rel="stylesheet" href="styles/[nome-da-tela].css">
-</head>
-<body>
-  <header>
-    <nav>
-      <!-- menu de navegação -->
-    </nav>
-  </header>
+## Sessões
 
-  <main>
-    <section>
-      <h1>[Título principal da tela]</h1>
-      <!-- conteúdo principal -->
-    </section>
-  </main>
+Ao criar uma página protegida:
 
-  <footer>
-    <!-- rodapé -->
-  </footer>
+- use `SessionStorage` com o escopo da área;
+- use `AuthGuard` com a URL de redirecionamento correta;
+- informe `expectedTypeId` quando a área exigir um perfil específico;
+- limpe a sessão ao fazer logout;
+- trate token ausente e perfil inválido com estado de acesso negado.
 
-  <script src="../_common/scripts/HttpClientBase.js"></script>
-  <script src="scripts/[nome-da-tela].js"></script>
-</body>
-</html>
-```
+## Mocks e integração
 
-> ❌ Nunca usar `<div>` como estrutura de layout  
-> ❌ Nunca usar `<table>` exceto para dados tabulares reais  
-> ✅ Preferir: `<header>`, `<nav>`, `<main>`, `<section>`, `<article>`, `<aside>`, `<footer>`, `<ul>`, `<ol>`, `<figure>`, `<form>`, `<fieldset>`
+Mantenha dados mockados em arquivos próprios, como `runner-mock-data.js`.
+Identifique visualmente estados temporários com mensagens como “Modo
+demonstração” ou “Mock temporário”. Não trate erro da API como lista vazia.
 
----
-
-## Padrão de JavaScript
+Para integração:
 
 ```js
-// ✅ Seleção de elementos
-const btnSubmit = document.querySelector("#btn-submit");
-const listItems = document.querySelectorAll(".item-card");
+import Workouts from "../../_common/classes/Workouts.js";
 
-// ✅ Eventos registrados via código, nunca inline no HTML
-btnSubmit.addEventListener("click", handleSubmit);
-
-function handleSubmit(event) {
-  event.preventDefault();
-  // lógica aqui
-}
-
-// ✅ Futuro: requisições via HttpClientBase.js (não implementar ainda na etapa estática)
-// const client = new HttpClientBase();
-// client.get("/api/recurso").then(...).catch(...);
+const client = new Workouts();
+client.setAuthToken(storage.getToken());
+const result = await client.listMine();
 ```
 
-> ❌ Nunca usar `onclick=""`, `onsubmit=""` ou qualquer evento inline no HTML  
-> ❌ Nunca usar `jQuery` ou `$(...)`  
-> ❌ Nunca usar `getElementById` — usar sempre `document.querySelector`
+Exiba estados de carregamento, sucesso, erro e vazio. Mensagens devem ser
+inline ou toast acessível, nunca `alert()`.
 
----
+## Checklist
 
-## Organização de arquivos
-
-| O que criar | Onde colocar |
-|---|---|
-| CSS comum a todas as áreas | `views/assets/_common/styles/` |
-| JS utilitário (helpers, HttpClientBase) | `views/assets/_common/scripts/` |
-| Telas e estilos da área pública | `views/assets/public/` |
-| Telas e estilos da área logada | `views/assets/app/` |
-| Telas e estilos do painel admin | `views/assets/admin/` |
-
-Nomenclatura sugerida: `kebab-case` para arquivos e pastas.  
-Exemplo: `views/assets/public/styles/login.css`, `views/assets/app/scripts/dashboard.js`
-
----
-
-## Como marcar conteúdo estático para integração futura
-
-```html
-<!-- TODO: substituir por dado real da API GET /api/usuarios -->
-<ul>
-  <li>João Silva</li>
-  <li>Maria Souza</li>
-</ul>
-```
-
-```js
-// TODO: substituir por chamada real via HttpClientBase.js
-const produtos = [
-  { id: 1, nome: "Produto A" },
-  { id: 2, nome: "Produto B" },
-];
-```
-
----
-
-## Checklist antes de entregar código de frontend
-
-- [ ] HTML usa apenas tags semânticas
-- [ ] Nenhum `<div>` ou `<table>` usado para estrutura de layout
-- [ ] CSS em arquivo separado, sem `style` inline
-- [ ] JS em arquivo separado, sem eventos inline no HTML
-- [ ] Seleção de elementos usa `document.querySelector`
-- [ ] Conteúdo estático temporário marcado com `TODO`
-- [ ] Arquivo salvo na pasta correta da área (`public`, `app` ou `admin`)
-- [ ] Recursos compartilhados salvos em `_common`
-- [ ] Texto e comentários em Português do Brasil
-- [ ] Código, nomes de funções, classes e variáveis em English
+- [ ] Área e pasta corretas
+- [ ] HTML semântico
+- [ ] CSS separado
+- [ ] Sem eventos inline ou jQuery
+- [ ] JavaScript modular e orientado a objetos
+- [ ] API consumida por `HttpClientBase`
+- [ ] Sessão e tipo de usuário corretos
+- [ ] Mock explicitamente identificado
+- [ ] Estados de loading, vazio, erro e sucesso
+- [ ] Navegação por teclado e foco visível

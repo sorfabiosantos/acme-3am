@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Área do corredor Running Power.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="../views/assets/runner/styles/runner.css">
+    <title>Área do corredor — Running Power</title>
+</head>
+<body class="runner-body">
+    <main class="runner-login" data-runner-login>
+        <section class="runner-login__panel" aria-labelledby="runner-login-title">
+            <a class="runner-brand" href="../index.html" aria-label="Running Power">
+                <span class="runner-brand__mark"><i data-lucide="zap" aria-hidden="true"></i></span>
+                Running<span>Power</span>
+            </a>
+            <span class="runner-login__eyebrow">Área do corredor</span>
+            <h1 id="runner-login-title">Acesse seus treinos.</h1>
+            <p class="runner-login__intro">Entre para consultar sua programação, registrar execuções e acompanhar sua evolução.</p>
+            <form data-runner-login-form class="runner-form">
+                <label for="runner-email">E-mail</label>
+                <input id="runner-email" name="email" type="email" autocomplete="email" placeholder="voce@email.com" required>
+                <label for="runner-password">Senha</label>
+                <input id="runner-password" name="password" type="password" autocomplete="current-password" placeholder="Sua senha" required>
+                <button class="runner-button runner-button--primary runner-button--full" type="submit">Entrar na minha área <i data-lucide="arrow-right" aria-hidden="true"></i></button>
+                <p class="runner-login__feedback" data-runner-login-feedback role="status" aria-live="polite"></p>
+            </form>
+            <aside class="runner-login__notice">
+                <i data-lucide="info" aria-hidden="true"></i>
+                <span>Seu acesso é criado ou enviado pelo assessor. Não existe cadastro público de corredores.</span>
+            </aside>
+            <p class="runner-login__help">Esqueceu sua senha? Fale com seu assessor para recuperar o acesso.</p>
+            <a class="runner-login__back" href="../index.html"><i data-lucide="arrow-left" aria-hidden="true"></i> Voltar para o site</a>
+        </section>
+        <aside class="runner-login__visual" aria-label="Resumo da área do corredor">
+            <span class="runner-visual__glow"></span>
+            <span class="runner-visual__label">Seu ritmo. Seu caminho.</span>
+            <h2>Treine com clareza.<br><strong>Evolua com constância.</strong></h2>
+            <p>Uma visão simples para você saber o que fazer hoje e celebrar cada quilômetro.</p>
+            <article class="runner-visual__card">
+                <span><i data-lucide="calendar-check-2" aria-hidden="true"></i> Treino de hoje</span>
+                <strong>Rodagem progressiva</strong>
+                <small>8 km · 48 min · 06:30</small>
+                <span class="runner-visual__progress"><i style="width: 68%"></i></span>
+            </article>
+        </aside>
+    </main>
+
+    <main class="runner-app" data-runner-app hidden>
+        <aside class="runner-sidebar" data-runner-sidebar aria-label="Navegação do corredor">
+            <a class="runner-brand" href="#dashboard" data-runner-nav="dashboard" aria-label="Running Power">
+                <span class="runner-brand__mark"><i data-lucide="zap" aria-hidden="true"></i></span>
+                Running<span>Power</span>
+            </a>
+            <span class="runner-sidebar__label">Minha área</span>
+            <nav class="runner-nav">
+                <a href="#dashboard" data-runner-nav="dashboard" class="is-active"><i data-lucide="layout-dashboard" aria-hidden="true"></i> Início</a>
+                <a href="#workouts" data-runner-nav="workouts"><i data-lucide="calendar-days" aria-hidden="true"></i> Treinos</a>
+                <a href="#progress" data-runner-nav="progress"><i data-lucide="chart-no-axes-combined" aria-hidden="true"></i> Evolução</a>
+                <a href="#races" data-runner-nav="races"><i data-lucide="trophy" aria-hidden="true"></i> Provas</a>
+                <a href="#profile" data-runner-nav="profile"><i data-lucide="user-round" aria-hidden="true"></i> Perfil</a>
+            </nav>
+            <div class="runner-sidebar__footer">
+                <p><i data-lucide="message-circle-question" aria-hidden="true"></i> Precisa de ajuda? Fale com seu assessor.</p>
+                <button type="button" data-runner-logout><i data-lucide="log-out" aria-hidden="true"></i> Sair</button>
+            </div>
+        </aside>
+
+        <section class="runner-main">
+            <header class="runner-topbar">
+                <button class="runner-menu-toggle" type="button" data-runner-menu-toggle aria-label="Abrir menu" aria-expanded="false"><i data-lucide="menu" aria-hidden="true"></i></button>
+                <span class="runner-topbar__context">Área do corredor <small>·</small> 18 de agosto de 2026</span>
+                <span class="runner-topbar__profile"><span class="runner-avatar" data-runner-user-initials>MC</span><span><strong data-runner-user-name>Marina Costa</strong><small>Corredora</small></span></span>
+            </header>
+
+            <section class="runner-content" data-runner-view="dashboard" aria-labelledby="runner-greeting">
+                <header class="runner-page-heading">
+                    <div><span class="runner-eyebrow">Segunda-feira, 18 de agosto</span><h1 id="runner-greeting" data-runner-greeting>Olá, Marina!</h1><p>Veja o que está reservado para você hoje.</p></div>
+                    <span class="runner-mode-note"><i data-lucide="sparkles" aria-hidden="true"></i> Dados de demonstração</span>
+                </header>
+                <section class="runner-stats" data-runner-summary aria-label="Resumo da semana"></section>
+                <div class="runner-dashboard-grid">
+                    <section class="runner-card runner-next" aria-labelledby="next-workout-title">
+                        <header class="runner-card__heading"><div><span class="runner-eyebrow">Sua programação</span><h2 id="next-workout-title">O próximo passo</h2></div><i data-lucide="footprints" aria-hidden="true"></i></header>
+                        <div data-runner-next-workout></div>
+                    </section>
+                    <section class="runner-card" aria-labelledby="alerts-title">
+                        <header class="runner-card__heading"><div><span class="runner-eyebrow">Para você</span><h2 id="alerts-title">Lembretes</h2></div><i data-lucide="bell" aria-hidden="true"></i></header>
+                        <div class="runner-alert-list" data-runner-alerts></div>
+                    </section>
+                </div>
+                <section class="runner-card runner-section-card" aria-labelledby="race-highlight-title">
+                    <header class="runner-card__heading"><div><span class="runner-eyebrow">Calendário</span><h2 id="race-highlight-title">Próxima prova</h2></div><button class="runner-text-button" type="button" data-runner-view="races">Ver todas <i data-lucide="arrow-up-right" aria-hidden="true"></i></button></header>
+                    <div class="runner-dashboard-race" data-runner-dashboard-race></div>
+                </section>
+            </section>
+
+            <section class="runner-content" data-runner-view="workouts" hidden aria-labelledby="workouts-heading">
+                <header class="runner-page-heading"><div><span class="runner-eyebrow">Minha programação</span><h1 id="workouts-heading">Treinos</h1><p>Consulte as orientações do seu assessor e registre o que realizou.</p></div><span class="runner-mode-note"><i data-lucide="database" aria-hidden="true"></i> Mock temporário</span></header>
+                <div class="runner-workouts-layout">
+                    <section class="runner-card runner-workouts-list" aria-label="Lista de treinos">
+                        <header class="runner-card__heading"><h2>Agenda e histórico</h2><select data-runner-workout-filter aria-label="Filtrar treinos"><option value="all">Todos</option><option value="planned">Planejados</option><option value="completed">Concluídos</option></select></header>
+                        <div data-runner-workout-list></div>
+                    </section>
+                    <section class="runner-card runner-workout-detail" aria-label="Detalhes do treino" data-runner-workout-detail></section>
+                </div>
+                <form class="runner-card runner-execution-form" data-runner-execution-form hidden>
+                    <input type="hidden" name="workout_id">
+                    <header class="runner-card__heading"><div><span class="runner-eyebrow">Depois do treino</span><h2>Registrar execução e feedback</h2></div><button class="runner-icon-button" type="button" data-runner-execution-cancel aria-label="Fechar formulário"><i data-lucide="x" aria-hidden="true"></i></button></header>
+                    <div class="runner-form-grid">
+                        <label>Status<select name="status"><option value="completed">Realizado completamente</option><option value="partial">Realizado parcialmente</option><option value="not_completed">Não realizado</option></select></label>
+                        <label>Data e hora<input name="executed_at" type="datetime-local"></label>
+                        <label>Distância (km)<input name="distance" type="number" min="0" step="0.1" placeholder="8,0"></label>
+                        <label>Duração (min)<input name="duration" type="number" min="0" placeholder="48"></label>
+                        <label>Percepção de esforço<select name="exertion"><option value="">Selecione</option><option value="1">1 — Muito leve</option><option value="5">5 — Moderado</option><option value="10">10 — Máximo</option></select></label>
+                        <label>Sensação<select name="feeling"><option value="great">Muito bem</option><option value="good">Bem</option><option value="neutral">Normal</option><option value="tired">Cansado</option><option value="bad">Mal</option></select></label>
+                        <label class="runner-form-grid__wide">Observações<textarea name="notes" rows="3" placeholder="Como foi o treino?"></textarea></label>
+                    </div>
+                    <button class="runner-button runner-button--primary" type="submit">Salvar registro <i data-lucide="check" aria-hidden="true"></i></button>
+                </form>
+            </section>
+
+            <section class="runner-content" data-runner-view="progress" hidden aria-labelledby="progress-heading">
+                <header class="runner-page-heading"><div><span class="runner-eyebrow">Consistência gera resultado</span><h1 id="progress-heading">Evolução</h1><p>Acompanhe seus principais indicadores de treino.</p></div><span class="runner-mode-note"><i data-lucide="database" aria-hidden="true"></i> Mock temporário</span></header>
+                <section class="runner-stats" data-runner-progress-summary aria-label="Indicadores de evolução"></section>
+                <section class="runner-card runner-section-card"><header class="runner-card__heading"><div><span class="runner-eyebrow">Histórico</span><h2>Seu volume ao longo do tempo</h2></div><i data-lucide="bar-chart-3" aria-hidden="true"></i></header><div class="runner-history" data-runner-progress-history></div><p class="runner-footnote"><i data-lucide="info" aria-hidden="true"></i> Os indicadores serão calculados automaticamente quando seus registros forem integrados ao sistema.</p></section>
+            </section>
+
+            <section class="runner-content" data-runner-view="races" hidden aria-labelledby="races-heading">
+                <header class="runner-page-heading"><div><span class="runner-eyebrow">Seu calendário esportivo</span><h1 id="races-heading">Provas</h1><p>Veja as provas vinculadas pelo seu assessor.</p></div><span class="runner-mode-note"><i data-lucide="database" aria-hidden="true"></i> Mock temporário</span></header>
+                <section class="runner-card runner-section-card"><header class="runner-card__heading"><div><span class="runner-eyebrow">Calendário</span><h2>Minhas provas</h2></div><span class="runner-info-label"><i data-lucide="lock" aria-hidden="true"></i> Inscrições pelo assessor</span></header><div class="runner-race-list" data-runner-race-list></div></section>
+            </section>
+
+            <section class="runner-content" data-runner-view="profile" hidden aria-labelledby="profile-heading">
+                <header class="runner-page-heading"><div><span class="runner-eyebrow">Seus dados</span><h1 id="profile-heading">Perfil</h1><p>Consulte seus dados e preferências esportivas.</p></div></header>
+                <form class="runner-card runner-profile-form" data-runner-profile-form>
+                    <header class="runner-card__heading"><div><span class="runner-eyebrow">Informações pessoais</span><h2>Meu perfil</h2></div><span class="runner-info-label"><i data-lucide="shield-check" aria-hidden="true"></i> Assessor responsável: Fábio Santos</span></header>
+                    <div class="runner-form-grid">
+                        <label>Nome completo<input data-runner-profile-name name="name" readonly></label>
+                        <label>E-mail<input data-runner-profile-email name="email" type="email" readonly></label>
+                        <label>Objetivo<select data-runner-profile-goal name="goal"><option>Meia maratona</option><option>10 km</option><option>Maratona</option><option>Saúde e bem-estar</option></select></label>
+                        <label>Nível<select data-runner-profile-level name="level"><option>Iniciante</option><option>Intermediário</option><option>Avançado</option></select></label>
+                        <label class="runner-form-grid__wide">Disponibilidade<input data-runner-profile-availability name="availability"></label>
+                        <label class="runner-form-grid__wide">Observações esportivas<textarea data-runner-profile-notes name="notes" rows="4"></textarea></label>
+                    </div>
+                    <footer class="runner-profile-form__footer"><small>Nome, e-mail e vínculo com o assessor são gerenciados pelo assessor.</small><button class="runner-button runner-button--primary" type="submit">Salvar preferências <i data-lucide="save" aria-hidden="true"></i></button></footer>
+                </form>
+            </section>
+        </section>
+    </main>
+    <div class="runner-toast" data-runner-toast role="status" aria-live="polite"></div>
+    <script type="module" src="../views/assets/runner/scripts/runner-app.js"></script>
+</body>
+</html>

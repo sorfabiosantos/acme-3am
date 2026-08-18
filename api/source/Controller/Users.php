@@ -73,6 +73,7 @@ class Users extends Api
             "id" => $user->getId(),
             "name" => $user->getName(),
             "photo" => $user->getPhoto(),
+            "type_id" => $user->getTypeId(),
             "token" => $user->getToken(),
         ];
 
@@ -81,6 +82,44 @@ class Users extends Api
             "success",
             "Usuário logado com sucesso",
             "success")->back($response);
+    }
+
+    public function authAthlete (array $data): void
+    {
+        if (!$this->validateCredentials($data)) {
+            $this->call(
+                400,
+                "bad_request",
+                "E-mail e senha são obrigatórios. O e-mail deve ser válido.",
+                "error"
+            )->back();
+            return;
+        }
+
+        $user = new User();
+        if (!$user->login($data["email"], $data["password"], 3)) {
+            $this->call(
+                401,
+                "unauthorized",
+                $user->getErrorMessage() ?: "Credenciais inválidas ou conta inativa.",
+                "error"
+            )->back();
+            return;
+        }
+
+        $this->call(
+            200,
+            "success",
+            "Acesso do corredor realizado com sucesso",
+            "success"
+        )->back([
+            "id" => $user->getId(),
+            "name" => $user->getName(),
+            "email" => $user->getEmail(),
+            "photo" => $user->getPhoto(),
+            "type_id" => $user->getTypeId(),
+            "token" => $user->getToken()
+        ]);
     }
 
     public function authAdmin (array $data): void
@@ -110,6 +149,7 @@ class Users extends Api
             "id" => $user->getId(),
             "name" => $user->getName(),
             "photo" => $user->getPhoto(),
+            "type_id" => $user->getTypeId(),
             "token" => $user->getToken(),
         ];
 
@@ -164,5 +204,12 @@ class Users extends Api
             return false;
         }
         return true;
+    }
+
+    private function validateCredentials(array $data): bool
+    {
+        return isset($data["email"], $data["password"]) &&
+            filter_var($data["email"], FILTER_VALIDATE_EMAIL) &&
+            trim((string)$data["password"]) !== "";
     }
 }

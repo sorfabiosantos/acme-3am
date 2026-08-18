@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Área do assessor Running Power.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23FF6B00'/><text x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' font-family='system-ui' font-weight='800' font-size='18' fill='white'>⚡</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="../views/assets/app/styles/app.css">
+    <title>Dashboard — Running Power</title>
+</head>
+<body>
+    <div class="app-shell">
+        <aside id="app-sidebar" class="app-sidebar" aria-label="Navegação da área do assessor">
+            <a class="app-brand" href="index.html" aria-label="Running Power">
+                <i data-lucide="zap" aria-hidden="true"></i>
+                Running<span>Power</span>
+            </a>
+
+            <nav class="app-nav">
+                <a class="app-nav__link is-active" href="#dashboard" data-app-nav="dashboard">
+                    <i data-lucide="layout-dashboard" aria-hidden="true"></i>
+                    Dashboard
+                </a>
+                <a class="app-nav__link" href="#athletes" data-app-nav="athletes">
+                    <i data-lucide="users" aria-hidden="true"></i>
+                    Meus atletas
+                </a>
+                <a class="app-nav__link" href="#workouts" data-app-nav="workouts">
+                    <i data-lucide="calendar-check-2" aria-hidden="true"></i>
+                    Treinos
+                </a>
+                <a class="app-nav__link" href="#races" data-app-nav="races">
+                    <i data-lucide="trophy" aria-hidden="true"></i>
+                    Provas
+                </a>
+                <a class="app-nav__link" href="#reports" data-app-nav="reports">
+                    <i data-lucide="bar-chart-3" aria-hidden="true"></i>
+                    Relatórios
+                </a>
+            </nav>
+
+            <div class="app-sidebar__footer">
+                <div class="app-help">
+                    <i data-lucide="circle-help" aria-hidden="true"></i>
+                    <span>Precisa de ajuda? Fale com nosso suporte.</span>
+                </div>
+                <nav class="app-nav" aria-label="Configurações">
+                    <a class="app-nav__link" href="#settings" data-app-nav="settings">
+                        <i data-lucide="settings-2" aria-hidden="true"></i>
+                        Configurações
+                    </a>
+                    <button class="app-nav__link" type="button" data-app-logout>
+                        <i data-lucide="log-out" aria-hidden="true"></i>
+                        Sair
+                    </button>
+                </nav>
+            </div>
+        </aside>
+
+        <div class="app-main">
+            <header class="app-topbar">
+                <button id="app-menu-toggle" class="app-menu-toggle" type="button" aria-label="Abrir menu" aria-expanded="false">
+                    <i data-lucide="menu" aria-hidden="true"></i>
+                </button>
+
+                <label class="app-search">
+                    <i data-lucide="search" aria-hidden="true"></i>
+                    <input type="search" placeholder="Buscar atleta..." data-athlete-search>
+                </label>
+
+                <div class="app-topbar__actions">
+                    <button class="app-icon-button" type="button" aria-label="Notificações">
+                        <i data-lucide="bell" aria-hidden="true"></i>
+                        <span class="app-notification-dot" aria-hidden="true"></span>
+                    </button>
+                    <div class="app-profile">
+                        <span class="app-avatar" data-user-initials>FS</span>
+                        <span class="app-profile__data">
+                            <strong class="app-profile__name" data-user-name>Fábio Santos</strong>
+                            <small class="app-profile__role">Assessor de corrida</small>
+                        </span>
+                    </div>
+                </div>
+            </header>
+
+            <main id="dashboard" class="app-content">
+                <header class="app-page-heading">
+                    <div>
+                        <h1>Bom dia, <span data-user-first-name>Fábio</span>! 👋</h1>
+                        <p>Acompanhe o desempenho da sua assessoria nesta semana.</p>
+                    </div>
+                    <button class="app-primary-button" type="button" data-app-action="new-workout">
+                        <i data-lucide="plus" aria-hidden="true"></i>
+                        Novo treino
+                    </button>
+                </header>
+
+                <section class="app-summary-grid" aria-label="Resumo da assessoria" data-summary-list></section>
+
+                <div class="app-dashboard-grid">
+                    <section id="workouts" class="app-card app-section-card" aria-labelledby="workouts-title">
+                        <header class="app-section-card__header">
+                            <div>
+                                <h2 id="workouts-title">Agenda de treinos</h2>
+                                <p>Confira os próximos treinos da sua assessoria.</p>
+                            </div>
+                            <select aria-label="Filtrar treinos" data-workout-filter>
+                                <option value="all">Todos</option>
+                                <option value="planned">Planejados</option>
+                                <option value="completed">Concluídos</option>
+                                <option value="pending">Pendentes</option>
+                            </select>
+                        </header>
+                        <div class="app-workout-list" data-workout-list></div>
+                    </section>
+
+                    <section id="athletes" class="app-card app-section-card" aria-labelledby="athletes-title">
+                        <header class="app-section-card__header">
+                            <div>
+                                <h2 id="athletes-title">Atletas em destaque</h2>
+                                <p>Quem está evoluindo mais esta semana.</p>
+                            </div>
+                            <button class="app-section-link" type="button" data-app-action="athletes">Ver todos</button>
+                        </header>
+                        <div class="app-athlete-list" data-athlete-list></div>
+                    </section>
+                </div>
+
+                <div class="app-dashboard-grid">
+                    <section id="races" class="app-card app-section-card" aria-labelledby="races-title">
+                        <header class="app-section-card__header">
+                            <div>
+                                <h2 id="races-title">Próximas provas</h2>
+                                <p>Eventos com atletas da sua assessoria.</p>
+                            </div>
+                            <button class="app-section-link" type="button" data-app-action="races">Ver calendário</button>
+                        </header>
+                        <div class="app-race-list" data-race-list></div>
+                    </section>
+
+                    <section id="reports" class="app-card app-section-card" aria-labelledby="focus-title">
+                        <header class="app-section-card__header">
+                            <div>
+                                <h2 id="focus-title">Foco da semana</h2>
+                                <p>Um resumo para orientar sua próxima ação.</p>
+                            </div>
+                            <i data-lucide="target" class="text-brand-600" aria-hidden="true"></i>
+                        </header>
+                        <div class="app-empty">
+                            <strong>8 atletas precisam de atenção</strong>
+                            <p>Confira os feedbacks pendentes e ajuste os próximos treinos.</p>
+                            <button class="app-primary-button" type="button" data-app-action="feedbacks">Ver feedbacks</button>
+                        </div>
+                    </section>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <div class="app-toast" data-app-toast role="status" aria-live="polite"></div>
+
+    <script type="module" src="../views/assets/app/scripts/app.js"></script>
+</body>
+</html>

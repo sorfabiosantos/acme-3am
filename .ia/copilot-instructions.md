@@ -1,63 +1,116 @@
-# 🤖 Instruções centrais para LLMs (.ia/)
+# Instruções centrais do Running Power
 
-Este repositório é um **scaffold didático em MVC** para a disciplina de **Programação Web II**.
+## Contexto do produto
 
-## 📖 Referências importantes
+O Running Power é um micro SaaS em PHP MVC para assessores de corrida de rua,
+seus corredores e a administração da plataforma.
 
-- **README.MD** (raiz) → visão geral do projeto
-- `.ia/agents/` → documentação de contexto para agentes de IA
-- `.ia/skills/` → skills operacionais de como gerar código
+As áreas existentes são:
 
-## 🌐 Idioma
+- `index.html`: área pública, autenticação e cadastro de assessores;
+- `app/index.html`: área autenticada do assessor;
+- `admin/index.html`: painel administrativo acessado diretamente por `/admin`;
+- `runner/index.html`: área autenticada do corredor, acessada diretamente por `/runner`.
 
-- Conteúdo textual / documentação → **Português do Brasil**
-- Código, identificadores, nomes de arquivo → **English**
+## Idioma e nomenclatura
 
-## 🏗️ Convenções do MVC
+- Textos de interface e documentação: Português do Brasil.
+- Código, identificadores, classes, métodos e nomes de arquivos: English.
+- Preserve a nomenclatura existente em `snake_case` no banco e nos payloads da API.
+
+## Arquitetura
+
+Preserve as fronteiras MVC:
 
 | Camada | Responsabilidade |
-|--------|-----------------|
-| Controller | Orquestra requisições, valida, retorna JSON |
-| Model | SQL, acesso a banco, regras de negócio |
-| View (assets) | Consome API, SEM regra de negócio ou acesso a banco |
+|---|---|
+| Controller | Rotas, autenticação, validação e respostas JSON |
+| Model | SQL, prepared statements e regras de persistência |
+| View/assets | Interface, eventos e consumo da API |
 
-## 🔗 Fluxo de requisição
+Fluxo:
 
-```
-index.html / JS → api/.htaccess → api/index.php → Core/Router → Controller/Api → Models → MySQL
-                                                    ↓
-                                               Resposta JSON
-```
-
-## 🎨 Frontend
-
-- HTML **semântico** (nunca `<div>` ou `<table>` para layout)
-- CSS em arquivo separado
-- JS: `document.querySelector`, eventos via código, HttpClientBase.js para API
-- jQuery proibido, eventos inline proibidos
-
-## 📁 Pastas do projeto
-
-```
-acme-3am/
-├── .ia/               ← Agents & Skills (neutro, multi-ferramenta)
-├── .github/           ← GitHub específico (stubs apontam para .ia/)
-├── api/               ← Backend PHP (MVC)
-├── data-base/         ← Scripts SQL
-├── storage/           ← Uploads, logs, cache
-└── views/             ← Frontend
-    └── assets/
-        ├── _common/   ← Recursos compartilhados
-        ├── public/    ← Área pública
-        ├── app/       ← Área logada
-        └── admin/     ← Painel administrativo
+```text
+HTML/JavaScript → Apache/API → api/index.php → Controller → Model → MySQL
+                                                           ↓
+                                                     JSON da API
 ```
 
-## ✅ Orientações para LLMs
+Não coloque SQL em JavaScript, HTML ou controllers. Não coloque regra de
+autorização apenas no frontend.
 
-1. Sempre leia `.ia/agents/AGENTS.md` para contexto geral antes de qualquer alteração
-2. Consulte a skill relevante em `.ia/skills/` antes de gerar código
-3. Mantenha as fronteiras do MVC estritas
-4. Use prepared statements nos models (placeholders `:id`, `:name`, etc.)
-5. Respostas da API devem ser JSON
-6. Recursos compartilhados de frontend em `_common/`
+## Frontend
+
+- Use HTML semântico, CSS separado e JavaScript orientado a objetos.
+- Não use jQuery nem eventos inline como `onclick`.
+- Use `document.querySelector` e listeners registrados em JavaScript.
+- Requisições devem reutilizar `views/assets/_common/classes/HttpClientBase.js`.
+- Classes de domínio HTTP ficam em `views/assets/_common/classes/`.
+- Código específico deve permanecer isolado em `public`, `app`, `admin` ou `runner`.
+- Mocks devem ser identificados e não podem substituir silenciosamente uma API integrada.
+
+Pastas atuais:
+
+```text
+views/assets/
+├── _common/  ← HTTP, classes de domínio, sessão e guards
+├── public/   ← landing page e autenticação de assessores
+├── app/      ← área do assessor
+├── admin/    ← área administrativa
+└── runner/   ← área do corredor
+```
+
+## Autenticação e autorização
+
+Tipos de acesso usados pelo produto:
+
+- `type_id = 1`: administrador;
+- `type_id = 2`: assessor;
+- `type_id = 3`: corredor.
+
+As sessões são separadas no `SessionStorage`:
+
+- sessão padrão: assessor;
+- escopo `admin`: administrador;
+- escopo `runner`: corredor.
+
+Use `AuthGuard` com o escopo e o tipo esperado da área. O backend deve
+validar o tipo pelo JWT e derivar o usuário autenticado; nunca confie em um
+`user_id` ou `athlete_id` enviado pelo cliente.
+
+Rotas importantes:
+
+```text
+POST /users/register
+POST /users/login
+POST /users/login-athlete
+POST /users/login-admin
+GET  /athletes/me
+PUT  /athletes/me
+GET  /workouts/my
+GET  /workouts/my/:workoutId
+POST /workouts/my/:workoutId/execution
+PUT  /workouts/my/:workoutId/execution
+GET  /workout-executions/my
+GET  /races/my
+GET  /progress/my
+```
+
+## Banco de dados
+
+O modelo documentado está em `data-base/bd-running-power.md`. A estrutura
+atual contempla autenticação, FAQs e o domínio planejado de atletas, grupos,
+treinos, execuções, provas e inscrições.
+
+Use prepared statements nos Models e preserve as chaves estrangeiras,
+índices e restrições descritos no documento do banco.
+
+## Validação
+
+Não há suíte automatizada configurada. Depois de alterações:
+
+- valide JavaScript com `node --check`;
+- valide PHP com `php -l` no container;
+- execute `git diff --check`;
+- teste as rotas protegidas sem token e com o tipo de usuário correto;
+- confirme que as áreas não compartilham sessões indevidamente.

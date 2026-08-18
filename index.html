@@ -100,9 +100,14 @@
                     <a href="#faq" class="text-sm font-medium text-surface-gray hover:text-brand-600 transition-colors no-underline">FAQ</a>
                 </nav>
 
-                <a href="#planos" class="hidden lg:inline-flex items-center gap-2 px-5 py-2.5 bg-brand-600 text-white font-semibold text-sm rounded-lg hover:bg-brand-700 transition-all duration-250 no-underline hover:shadow-lg hover:shadow-brand-600/25 active:scale-[0.98]">
-                    Começar Gratuitamente
-                </a>
+                <span class="hidden lg:flex items-center gap-3">
+                    <button type="button" class="text-sm font-semibold text-surface-gray hover:text-brand-600 transition-colors" data-auth-open="login">
+                        Entrar
+                    </button>
+                    <button type="button" class="inline-flex items-center gap-2 px-5 py-2.5 bg-brand-600 text-white font-semibold text-sm rounded-lg hover:bg-brand-700 transition-all duration-250 hover:shadow-lg hover:shadow-brand-600/25 active:scale-[0.98]" data-auth-open="register">
+                        Começar Gratuitamente
+                    </button>
+                </span>
 
                 <button id="mobile-menu-btn" class="lg:hidden p-2 rounded-lg hover:bg-surface-muted transition-colors" aria-label="Abrir menu" aria-expanded="false">
                     <i data-lucide="menu" class="w-6 h-6" aria-hidden="true"></i>
@@ -130,7 +135,7 @@
             <a href="#faq" class="text-lg font-medium text-surface-dark hover:text-brand-600 transition-colors no-underline py-2">FAQ</a>
         </nav>
         <div class="mt-auto pt-8">
-            <a href="#planos" class="btn-primary w-full">Começar Gratuitamente</a>
+            <button type="button" class="btn-primary w-full" data-auth-open="register">Começar Gratuitamente</button>
         </div>
     </div>
 
@@ -159,10 +164,10 @@
                         </p>
 
                         <p class="flex flex-col sm:flex-row gap-3 mb-10">
-                            <a href="#planos" class="btn-primary">
+                            <button type="button" class="btn-primary" data-auth-open="register">
                                 Começar Gratuitamente
                                 <i data-lucide="arrow-right" class="w-5 h-5" aria-hidden="true"></i>
-                            </a>
+                            </button>
                             <a href="#funcionalidades" class="btn-secondary">
                                 <i data-lucide="play" class="w-5 h-5" aria-hidden="true"></i>
                                 Ver Demonstração
@@ -623,7 +628,7 @@
                                 Cadastro de provas e resultados
                             </li>
                         </ul>
-                        <a href="#" class="btn-secondary w-full">Começar Gratuitamente</a>
+                        <button type="button" class="btn-secondary w-full" data-auth-open="register">Começar Gratuitamente</button>
                     </article>
 
                     <article class="bg-white rounded-2xl p-8 pricing-card-highlight card-lift animate-on-scroll animate-on-scroll-delay-1 lg:scale-105">
@@ -1006,10 +1011,10 @@
                         Comece gratuitamente hoje mesmo e descubra como o Running Power pode transformar a gestão da sua assessoria.
                     </p>
                     <p class="flex flex-col sm:flex-row gap-3 justify-center">
-                        <a href="#planos" class="btn-primary text-lg px-10 py-4">
+                        <button type="button" class="btn-primary text-lg px-10 py-4" data-auth-open="register">
                             Criar minha conta
                             <i data-lucide="arrow-right" class="w-5 h-5" aria-hidden="true"></i>
-                        </a>
+                        </button>
                         <a href="#funcionalidades" class="inline-flex items-center justify-center gap-2 px-10 py-4 border-2 border-gray-700 text-gray-300 font-semibold text-lg rounded-lg hover:border-gray-500 hover:text-white transition-all duration-250 no-underline">
                             <i data-lucide="play" class="w-5 h-5" aria-hidden="true"></i>
                             Ver demonstração
@@ -1092,9 +1097,74 @@
         </div>
     </footer>
 
+    <!-- AUTH MODAL -->
+    <dialog id="auth-modal" class="auth-modal" aria-labelledby="auth-modal-title">
+        <div class="auth-modal__content">
+            <button type="button" class="auth-modal__close" data-auth-close aria-label="Fechar autenticação">
+                <i data-lucide="x" class="w-5 h-5" aria-hidden="true"></i>
+            </button>
+
+            <header class="auth-modal__header">
+                <span class="auth-modal__eyebrow">Running<span>Power</span></span>
+                <h2 id="auth-modal-title">Acesse sua assessoria</h2>
+                <p>Organize seus treinos e acompanhe seus atletas em um só lugar.</p>
+            </header>
+
+            <nav class="auth-tabs" aria-label="Autenticação">
+                <button type="button" class="auth-tab is-active" data-auth-tab="login" aria-selected="true">Login</button>
+                <button type="button" class="auth-tab" data-auth-tab="register" aria-selected="false">Cadastro</button>
+                <button type="button" class="auth-tab" data-auth-tab="forgot" aria-selected="false">Esqueci minha senha</button>
+            </nav>
+
+            <div class="auth-feedback" data-auth-feedback role="status" aria-live="polite"></div>
+
+            <section class="auth-panel is-active" data-auth-panel="login">
+                <form id="login-form" class="auth-form">
+                    <label for="login-email">E-mail</label>
+                    <input id="login-email" name="email" type="email" autocomplete="email" placeholder="voce@exemplo.com" required>
+
+                    <label for="login-password">Senha</label>
+                    <input id="login-password" name="password" type="password" autocomplete="current-password" placeholder="Digite sua senha" required>
+
+                    <button type="submit" class="btn-primary auth-form__submit">Entrar</button>
+                    <button type="button" class="auth-link" data-auth-tab-trigger="forgot">Esqueci minha senha</button>
+                </form>
+            </section>
+
+            <section class="auth-panel" data-auth-panel="register" hidden>
+                <form id="register-form" class="auth-form">
+                    <label for="register-name">Nome</label>
+                    <input id="register-name" name="name" type="text" autocomplete="name" placeholder="Como podemos chamar você?" required>
+
+                    <label for="register-email">E-mail</label>
+                    <input id="register-email" name="email" type="email" autocomplete="email" placeholder="voce@exemplo.com" required>
+
+                    <label for="register-password">Senha</label>
+                    <input id="register-password" name="password" type="password" autocomplete="new-password" placeholder="Crie uma senha" minlength="6" required>
+
+                    <button type="submit" class="btn-primary auth-form__submit">Criar minha conta</button>
+                    <small class="auth-form__hint">Cadastro exclusivo para assessores de corrida.</small>
+                </form>
+            </section>
+
+            <section class="auth-panel" data-auth-panel="forgot" hidden>
+                <form id="forgot-form" class="auth-info">
+                    <i data-lucide="mail-question" class="w-10 h-10 text-brand-600" aria-hidden="true"></i>
+                    <h3>Recuperação de senha</h3>
+                    <p>Estamos preparando essa funcionalidade. Em breve você poderá receber um link para criar uma nova senha.</p>
+                    <label class="sr-only" for="forgot-email">E-mail</label>
+                    <input id="forgot-email" name="email" type="email" autocomplete="email" placeholder="voce@exemplo.com" required>
+                    <button type="submit" class="btn-secondary">Avisar quando estiver disponível</button>
+                    <button type="button" class="btn-secondary" data-auth-tab-trigger="login">Voltar para o login</button>
+                </form>
+            </section>
+        </div>
+    </dialog>
+
     <!-- Custom Scripts -->
     <script src="views/assets/public/scripts/scripts.js"></script>
-    <script src="views/assets/public/scripts/faqs.js" async></script>
+<!--    <script src="views/assets/public/scripts/faqs.js" async></script>-->
+    <script type="module" src="views/assets/public/scripts/auth-modal.js"></script>
 
     <!-- Initialize Lucide Icons -->
     <script>

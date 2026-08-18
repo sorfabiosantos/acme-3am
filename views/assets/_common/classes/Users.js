@@ -2,35 +2,31 @@ import HttpClientBase from "./HttpClientBase.js";
 
 export default class Users extends HttpClientBase {
     async login(email, password) {
-        return this.post("/users/login", { email, password });
+        return this.postForm("/users/login", { email, password });
     }
 
     async loginFromForm(form) {
-        const formData = form instanceof HTMLFormElement
-            ? new FormData(form)
-            : form;
-        return this.post("/users/login", {
-            email: formData.get("email"),
-            password: formData.get("password")
-        });
+        return this.postForm("/users/login", form);
     }
 
     async loginAdmin(email, password) {
-        return this.post("/users/login-admin", { email, password });
+        return this.postForm("/users/login-admin", { email, password });
     }
 
     async loginAdminFromForm(form) {
-        const formData = form instanceof HTMLFormElement
-            ? new FormData(form)
-            : form;
-        return this.post("/users/login-admin", {
-            email: formData.get("email"),
-            password: formData.get("password")
-        });
+        return this.postForm("/users/login-admin", form);
+    }
+
+    async loginAthlete(email, password) {
+        return this.postForm("/users/login-athlete", { email, password });
+    }
+
+    async loginAthleteFromForm(form) {
+        return this.postForm("/users/login-athlete", form);
     }
 
     async register(data) {
-        return this.post("/users/register", data);
+        return this.postForm("/users/register", data);
     }
 
     async update(data) {

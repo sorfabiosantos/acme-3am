@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Painel administrativo do Running Power.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23FF6B00'/><text x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' font-family='system-ui' font-weight='800' font-size='18' fill='white'>⚡</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="../views/assets/admin/styles/admin.css">
+    <title>Administração — Running Power</title>
+</head>
+<body>
+    <main id="admin-login-view" class="admin-login">
+        <section class="admin-login__card" aria-labelledby="admin-login-title">
+            <a class="admin-brand" href="../index.html" aria-label="Voltar para o Running Power">
+                <i data-lucide="zap" aria-hidden="true"></i>
+                Running<span>Power</span>
+            </a>
+            <span class="admin-login__eyebrow">Área restrita</span>
+            <h1 id="admin-login-title">Acesso administrativo</h1>
+            <p>Gerencie o conteúdo e acompanhe a operação do seu SaaS.</p>
+            <form id="admin-login-form" class="admin-form">
+                <label for="admin-email">E-mail administrativo</label>
+                <input id="admin-email" name="email" type="email" autocomplete="username" required>
+                <label for="admin-password">Senha</label>
+                <input id="admin-password" name="password" type="password" autocomplete="current-password" required>
+                <button class="admin-button admin-button--primary" type="submit">Entrar no painel</button>
+                <div class="admin-feedback" data-admin-login-feedback role="alert"></div>
+            </form>
+        </section>
+    </main>
+
+    <div id="admin-app-view" class="admin-shell" hidden>
+        <aside class="admin-sidebar" id="admin-sidebar">
+            <a class="admin-brand" href="index.html" aria-label="Running Power">
+                <i data-lucide="zap" aria-hidden="true"></i>
+                Running<span>Power</span>
+            </a>
+            <span class="admin-sidebar__label">Administração</span>
+            <nav class="admin-nav" aria-label="Navegação administrativa">
+                <button class="admin-nav__link is-active" type="button" data-admin-section="dashboard">
+                    <i data-lucide="layout-dashboard" aria-hidden="true"></i> Visão geral
+                </button>
+                <button class="admin-nav__link" type="button" data-admin-section="faqs">
+                    <i data-lucide="message-circle-question" aria-hidden="true"></i> Perguntas frequentes
+                </button>
+                <button class="admin-nav__link" type="button" data-admin-section="categories">
+                    <i data-lucide="folders" aria-hidden="true"></i> Categorias
+                </button>
+            </nav>
+            <div class="admin-sidebar__footer">
+                <span class="admin-sidebar__note"><i data-lucide="lock-keyhole" aria-hidden="true"></i> Ambiente protegido</span>
+                <button class="admin-nav__link" type="button" data-admin-logout>
+                    <i data-lucide="log-out" aria-hidden="true"></i> Sair
+                </button>
+            </div>
+        </aside>
+
+        <div class="admin-main">
+            <header class="admin-topbar">
+                <button class="admin-menu-toggle" type="button" data-admin-menu aria-label="Abrir menu" aria-expanded="false">
+                    <i data-lucide="menu" aria-hidden="true"></i>
+                </button>
+                <div>
+                    <span class="admin-topbar__label">Painel do proprietário</span>
+                    <strong data-admin-page-title>Visão geral</strong>
+                </div>
+                <span class="admin-user"><span class="admin-avatar" data-admin-initials>AD</span><span data-admin-user-name>Administrador</span></span>
+            </header>
+
+            <div class="admin-content">
+                <section class="admin-section is-active" data-admin-panel="dashboard">
+                    <header class="admin-heading">
+                        <div><span class="admin-kicker">Visão geral</span><h1>O que está acontecendo no Running Power?</h1><p>Indicadores mockados para acompanhar a operação enquanto os módulos são construídos.</p></div>
+                    </header>
+                    <div class="admin-metrics" data-admin-metrics></div>
+                    <div class="admin-grid admin-grid--two">
+                        <article class="admin-card">
+                            <header class="admin-card__header"><div><h2>Assessores em destaque</h2><p>Profissionais com maior base ativa.</p></div></header>
+                            <div class="admin-ranking" data-admin-ranking></div>
+                        </article>
+                        <article class="admin-card">
+                            <header class="admin-card__header"><div><h2>Atividade recente</h2><p>Eventos importantes da plataforma.</p></div></header>
+                            <div class="admin-activity" data-admin-activity></div>
+                        </article>
+                    </div>
+                </section>
+
+                <section class="admin-section" data-admin-panel="faqs" hidden>
+                    <header class="admin-heading admin-heading--row">
+                        <div><span class="admin-kicker">Conteúdo</span><h1>Perguntas frequentes</h1><p>Gerencie as dúvidas exibidas na área pública.</p></div>
+                        <button class="admin-button admin-button--primary" type="button" data-faq-new><i data-lucide="plus" aria-hidden="true"></i> Nova pergunta</button>
+                    </header>
+                    <div class="admin-card">
+                        <div class="admin-toolbar"><div class="admin-toolbar__filters"><input class="admin-search" type="search" placeholder="Buscar pergunta..." data-faq-search><select class="admin-filter" aria-label="Filtrar FAQs por categoria" data-faq-category-filter><option value="">Todas as categorias</option></select></div><span class="admin-count" data-faq-count></span></div>
+                        <div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Pergunta</th><th>Categoria</th><th>Status</th><th>Ações</th></tr></thead><tbody data-faq-list></tbody></table></div>
+                        <div class="admin-feedback" data-faq-feedback role="status"></div>
+                    </div>
+                </section>
+
+                <section class="admin-section" data-admin-panel="categories" hidden>
+                    <header class="admin-heading admin-heading--row">
+                        <div><span class="admin-kicker">Organização</span><h1>Categorias de FAQ</h1><p>Organize as perguntas por assunto.</p></div>
+                        <button class="admin-button admin-button--primary" type="button" data-category-new><i data-lucide="plus" aria-hidden="true"></i> Nova categoria</button>
+                    </header>
+                    <div class="admin-card">
+                        <div class="admin-toolbar"><input class="admin-search" type="search" placeholder="Buscar categoria..." data-category-search><span class="admin-count" data-category-count></span></div>
+                        <div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Nome</th><th>Status</th><th>Ações</th></tr></thead><tbody data-category-list></tbody></table></div>
+                        <div class="admin-feedback" data-category-feedback role="status"></div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <dialog class="admin-dialog" id="faq-dialog">
+        <form method="dialog" class="admin-dialog__card" data-faq-form>
+            <header><div><span class="admin-kicker">Conteúdo</span><h2 data-faq-dialog-title>Nova pergunta</h2></div><button class="admin-dialog__close" type="button" value="cancel" aria-label="Fechar"><i data-lucide="x" aria-hidden="true"></i></button></header>
+            <input type="hidden" name="id">
+            <label for="faq-category">Categoria</label><select id="faq-category" name="faqs_category_id" required></select>
+            <label for="faq-question">Pergunta</label><input id="faq-question" name="question" maxlength="255" required>
+            <label for="faq-answer">Resposta</label><textarea id="faq-answer" name="answer" maxlength="255" rows="5" required></textarea>
+            <div class="admin-dialog__actions"><button class="admin-button admin-button--secondary" type="button" value="cancel">Cancelar</button><button class="admin-button admin-button--primary" type="submit" value="default" data-faq-save>Salvar pergunta</button></div>
+        </form>
+    </dialog>
+
+    <dialog class="admin-dialog" id="category-dialog">
+        <form method="dialog" class="admin-dialog__card" data-category-form>
+            <header><div><span class="admin-kicker">Organização</span><h2 data-category-dialog-title>Nova categoria</h2></div><button class="admin-dialog__close" type="button" value="cancel" aria-label="Fechar"><i data-lucide="x" aria-hidden="true"></i></button></header>
+            <input type="hidden" name="id">
+            <label for="category-name">Nome</label><input id="category-name" name="name" maxlength="255" required>
+            <div class="admin-dialog__actions"><button class="admin-button admin-button--secondary" type="button" value="cancel">Cancelar</button><button class="admin-button admin-button--primary" type="submit" value="default" data-category-save>Salvar categoria</button></div>
+        </form>
+    </dialog>
+
+    <script type="module" src="../views/assets/admin/scripts/admin-app.js"></script>
+</body>
+</html>

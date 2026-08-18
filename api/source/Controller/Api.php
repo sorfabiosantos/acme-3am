@@ -33,9 +33,14 @@ class Api
             return false;
         }
 
-        //var_dump($jwtToken->data->id, $jwtToken->data->email);
+        $tokenTypeId = $jwtToken->data->type_id ?? null;
+        if ($tokenTypeId !== null && (int)$tokenTypeId !== $typeId) {
+            return false;
+        }
+
         $user = new User();
-        if(!$user->permissionVerify($jwtToken->data->email, $typeId)){
+        if(empty($jwtToken->data->id) || empty($jwtToken->data->email) ||
+            !$user->permissionVerify($jwtToken->data->email, $typeId)){
             return false;
         }
 

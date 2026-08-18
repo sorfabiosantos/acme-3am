@@ -102,18 +102,20 @@ O Copilot **lê automaticamente** a pasta `.github/`. Como criamos **stubs** (re
 
 ---
 
-## 📋 Exemplo prático — "Quero criar a tela de login"
+## 📋 Exemplo prático — "Quero criar uma tela"
 
 ### Passo 1: Leia o Agent de frontend
 
 > 📂 `agents/AGENT-frontend-design.md`
 
-Este arquivo contém perguntas para você **preencher** com as decisões do seu sistema:
-- Nome do sistema
-- Cores, tipografia
-- O que deve ter na tela de login
+Este arquivo contém o contexto visual das áreas já existentes:
+- área pública e autenticação de assessores;
+- área do assessor em `app/`;
+- painel administrativo em `admin/`;
+- área do corredor em `runner/`.
 
-**Preencha os colchetes `[ ]`** com suas respostas.
+Ao criar uma nova tela, atualize o agent com decisões permanentes antes de
+implementar. Não reintroduza placeholders já resolvidos.
 
 ### Passo 2: Aplique a Skill de frontend
 
@@ -123,17 +125,19 @@ Este arquivo diz para a IA **como gerar o código**:
 - ✅ Tags semânticas (`<header>`, `<main>`, `<section>`, `<footer>`)
 - ✅ CSS em arquivo separado
 - ✅ JS com `document.querySelector`, sem jQuery
-- ❌ Nunca `<div>` para layout
+- ✅ Separe mocks de clientes HTTP e marque estados temporários
+- ❌ Nunca `<div>` para layout quando um elemento semântico servir
 - ❌ Nunca eventos inline `onclick=""`
 
 ### Passo 3: Peça para a IA gerar
 
-Com base no que preencheu e na skill, peça:
+Com base no contexto atual e na skill, peça:
 
-> "Crie a tela de login do sistema seguindo as regras da skill de frontend."
+> "Crie a tela do corredor seguindo as regras da skill de frontend."
 
 A IA saberá:
-- Onde colocar os arquivos (`views/assets/public/`)
+- Onde colocar os arquivos da área correta (`views/assets/public/`,
+  `views/assets/app/`, `views/assets/admin/` ou `views/assets/runner/`)
 - Como estruturar o HTML
 - Como escrever o CSS e o JS
 

@@ -17,6 +17,38 @@ export default class HttpClientBase {
         delete this.#defaultHeaders["Authorization"];
     }
 
+    toFormData(data = {}) {
+        if (data instanceof FormData) {
+            return data;
+        }
+
+        if (typeof HTMLFormElement !== "undefined" && data instanceof HTMLFormElement) {
+            return new FormData(data);
+        }
+
+        const formData = new FormData();
+        Object.entries(data).forEach(([key, value]) => {
+            formData.append(key, value);
+        });
+        return formData;
+    }
+
+    toUrlSearchParams(data = {}) {
+        if (data instanceof URLSearchParams) {
+            return data;
+        }
+
+        if (typeof HTMLFormElement !== "undefined" && data instanceof HTMLFormElement) {
+            return new URLSearchParams(new FormData(data));
+        }
+
+        if (data instanceof FormData) {
+            return new URLSearchParams(data);
+        }
+
+        return new URLSearchParams(Object.entries(data));
+    }
+
     #buildUrl(endpoint, params = {}) {
         let url = `${this.#baseUrl}${endpoint}`;
 
@@ -85,6 +117,10 @@ export default class HttpClientBase {
         }, params);
     }
 
+    async postForm(endpoint, data = {}, params = {}) {
+        return this.post(endpoint, this.toFormData(data), params);
+    }
+
     async put(endpoint, data = {}, params = {}) {
         const isFormData = data instanceof FormData;
 
@@ -92,6 +128,17 @@ export default class HttpClientBase {
             method: "PUT",
             body: isFormData ? data : JSON.stringify(data),
             _isFormData: isFormData
+        }, params);
+    }
+
+    async putForm(endpoint, data = {}, params = {}) {
+        const body = this.toUrlSearchParams(data);
+        return this.#fetchWithConfig(endpoint, {
+            method: "PUT",
+            body: body.toString(),
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            }
         }, params);
     }
 

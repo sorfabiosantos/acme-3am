@@ -259,6 +259,206 @@ faq-item {
   transform: translateX(0);
 }
 
+/* ---- Authentication Modal ---- */
+.auth-modal {
+  width: min(100% - 32px, 480px);
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-xl);
+  color: var(--color-secondary);
+  box-shadow: var(--shadow-xl);
+}
+
+.auth-modal::backdrop {
+  background: rgba(17, 24, 39, 0.65);
+  backdrop-filter: blur(4px);
+}
+
+.auth-modal__content {
+  position: relative;
+  padding: 32px;
+}
+
+.auth-modal__close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: inline-flex;
+  padding: 8px;
+  color: var(--color-gray-700);
+  background: transparent;
+  border: 0;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.auth-modal__close:hover {
+  color: var(--color-primary);
+  background: var(--color-primary-light);
+}
+
+.auth-modal__header {
+  padding-right: 32px;
+  margin-bottom: 24px;
+}
+
+.auth-modal__eyebrow {
+  display: inline-block;
+  margin-bottom: 12px;
+  color: var(--color-primary);
+  font-size: 0.875rem;
+  font-weight: 800;
+}
+
+.auth-modal__eyebrow span {
+  color: var(--color-secondary);
+}
+
+.auth-modal__header h2 {
+  margin: 0 0 8px;
+  font-size: 1.5rem;
+  line-height: 1.25;
+}
+
+.auth-modal__header p {
+  margin: 0;
+  color: var(--color-gray-700);
+  line-height: 1.5;
+}
+
+.auth-tabs {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  margin-bottom: 20px;
+  background: var(--color-gray-100);
+  border-radius: var(--radius-md);
+}
+
+.auth-tab {
+  flex: 1;
+  min-height: 40px;
+  padding: 8px 6px;
+  color: var(--color-gray-700);
+  background: transparent;
+  border: 0;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.auth-tab.is-active {
+  color: var(--color-secondary);
+  background: var(--color-white);
+  box-shadow: var(--shadow-sm);
+}
+
+.auth-feedback {
+  min-height: 0;
+  margin-bottom: 0;
+  color: var(--color-gray-700);
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+.auth-feedback:not(:empty) {
+  padding: 10px 12px;
+  margin-bottom: 16px;
+  background: var(--color-primary-light);
+  border-radius: var(--radius-sm);
+}
+
+.auth-feedback.is-error {
+  color: #B91C1C;
+  background: #FEF2F2;
+}
+
+.auth-feedback.is-success {
+  color: #047857;
+  background: var(--color-success-light);
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.auth-form label {
+  margin-top: 8px;
+  color: var(--color-secondary);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.auth-form input,
+.auth-info input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px 14px;
+  color: var(--color-secondary);
+  background: var(--color-white);
+  border: 1px solid #D1D5DB;
+  border-radius: var(--radius-md);
+  font: inherit;
+}
+
+.auth-form input:focus {
+  border-color: var(--color-primary);
+  outline: 2px solid var(--color-primary-light);
+}
+
+.auth-form__submit {
+  width: 100%;
+  margin-top: 16px;
+}
+
+.auth-form__submit:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+.auth-form__hint {
+  margin-top: 4px;
+  color: var(--color-gray-700);
+  text-align: center;
+}
+
+.auth-link {
+  align-self: center;
+  padding: 4px;
+  color: var(--color-primary);
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.875rem;
+}
+
+.auth-link:hover {
+  text-decoration: underline;
+}
+
+.auth-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 0 8px;
+  text-align: center;
+}
+
+.auth-info h3,
+.auth-info p {
+  margin: 0;
+}
+
+.auth-info p {
+  color: var(--color-gray-700);
+  line-height: 1.6;
+}
+
 /* ---- Comparison Table ---- */
 .compare-table th,
 .compare-table td {
@@ -308,6 +508,14 @@ faq-item {
   .compare-table-wrap {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
+  }
+
+  .auth-modal__content {
+    padding: 24px 20px;
+  }
+
+  .auth-tab {
+    font-size: 0.72rem;
   }
 }
 

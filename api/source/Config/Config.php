@@ -5,7 +5,7 @@ const CONF_URL_TEST = "http://localhost:8080/acme-3am"; // URL base do site, ger
 
 
 const CONF_DB_HOST = "mysql";
-const CONF_DB_NAME = "db-acme-manha";
+const CONF_DB_NAME = "db-running-power";
 const CONF_DB_USER= "root";
 const CONF_DB_PORT = 3306;
 const CONF_DB_PASS= "1234567";

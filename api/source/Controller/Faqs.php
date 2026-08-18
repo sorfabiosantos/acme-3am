@@ -14,6 +14,18 @@ class Faqs extends Api
             ->back($faq->selectAll(["active = 1"]));
     }
 
+    public function listAllAdmin(array $data): void
+    {
+        if (!$this->authToken(1)) {
+            $this->call(401, "unauthorized", "Usuário não está autenticado (sem token ou token inválido).", "error")->back();
+            return;
+        }
+
+        $faq = new Faq();
+        $this->call(200, "success", "Lista administrativa de Perguntas Frequentes", "success")
+            ->back($faq->selectAll());
+    }
+
     public function listById(array $data): void
     {
         if (!isset($data["faqId"]) || empty($data["faqId"]) || !filter_var($data["faqId"], FILTER_VALIDATE_INT)) {
@@ -122,6 +134,15 @@ class Faqs extends Api
 
         if (isset($data["answer"]) && !empty(trim($data["answer"]))) {
             $faq->setAnswer($data["answer"]);
+        }
+
+        if (array_key_exists("active", $data)) {
+            $active = filter_var($data["active"], FILTER_VALIDATE_INT);
+            if ($active === false || !in_array($active, [0, 1], true)) {
+                $this->call(400, "bad_request", "O campo active deve ser 0 ou 1", "error")->back();
+                return;
+            }
+            $faq->setActive($active);
         }
 
         if (!$faq->updateById((int)$data["faqId"])) {

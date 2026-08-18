@@ -28,6 +28,7 @@ $route->namespace("Source\Controller");
 $route->group("/users");
 $route->post("/register","Users:register"); // Registrar usuário comum
 $route->post("/login","Users:auth"); // login de usuário comum
+$route->post("/login-athlete","Users:authAthlete"); // login exclusivo de corredor
 $route->put("/update","Users:update"); // update de usuário comum
 $route->post("/register-admin","Users:registerAdmin"); // Registrar usuário admin NÃO IMPLEMENTADO
 $route->post("/login-admin","Users:authAdmin"); // login de usuário admin
@@ -38,6 +39,30 @@ $route->group("/address");
 $route->post("/register","Addresses:register"); // Registrar usuário comum
 $route->put("/update","Addresses:update"); // Alterar usuário comum
 $route->get("/by-user","Addresses:selectByUser"); // Alterar usuário comum
+$route->group(null);
+
+$route->group("/athletes");
+$route->get("/me","Athletes:me");
+$route->put("/me","Athletes:update");
+$route->group(null);
+
+$route->group("/workouts");
+$route->get("/my","Workouts:my");
+$route->get("/my/{workoutId}","Workouts:show");
+$route->post("/my/{workoutId}/execution","Workouts:execution");
+$route->put("/my/{workoutId}/execution","Workouts:execution");
+$route->group(null);
+
+$route->group("/workout-executions");
+$route->get("/my","Workouts:executions");
+$route->group(null);
+
+$route->group("/races");
+$route->get("/my","Races:my");
+$route->group(null);
+
+$route->group("/progress");
+$route->get("/my","Progress:my");
 $route->group(null);
 
 // Início - Exercícios - Desafios
@@ -57,6 +82,7 @@ $route->group(null);
 // FAQs
 $route->group("/faqs");
 $route->get("/","Faqs:listAll");
+$route->get("/admin/list","Faqs:listAllAdmin");
 $route->get("/{faqId}","Faqs:listById");
 $route->get("/category/{categoryId}","Faqs:listByCategory");
 $route->post("/","Faqs:insert");

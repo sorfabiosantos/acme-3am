@@ -1,0 +1,655 @@
+:root {
+    --app-primary: #ff6b00;
+    --app-primary-light: #fff4eb;
+    --app-navy: #111827;
+    --app-muted: #667085;
+    --app-border: #e7e9ee;
+    --app-background: #f7f8fa;
+    --app-white: #ffffff;
+    --app-green: #10b981;
+    --app-blue: #3b82f6;
+    --app-purple: #8b5cf6;
+    --app-shadow: 0 8px 24px rgba(16, 24, 40, 0.06);
+    --app-radius: 16px;
+    font-family: Inter, system-ui, -apple-system, sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    color: var(--app-navy);
+    background: var(--app-background);
+    -webkit-font-smoothing: antialiased;
+}
+
+button,
+input,
+select {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+.app-shell {
+    display: flex;
+    min-height: 100vh;
+}
+
+.app-sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: 20;
+    display: flex;
+    width: 256px;
+    flex-direction: column;
+    padding: 24px 16px;
+    background: var(--app-white);
+    border-right: 1px solid var(--app-border);
+}
+
+.app-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    margin: 0 12px 36px;
+    color: var(--app-navy);
+    font-size: 1.2rem;
+    font-weight: 800;
+    text-decoration: none;
+}
+
+.app-brand i {
+    color: var(--app-primary);
+}
+
+.app-brand span {
+    color: var(--app-primary);
+}
+
+.app-nav {
+    display: grid;
+    gap: 6px;
+}
+
+.app-nav__link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    color: var(--app-muted);
+    border-radius: 10px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: 150ms ease;
+}
+
+.app-nav__link:hover,
+.app-nav__link.is-active {
+    color: var(--app-primary);
+    background: var(--app-primary-light);
+}
+
+.app-nav__link i {
+    width: 19px;
+}
+
+.app-sidebar__footer {
+    margin-top: auto;
+}
+
+.app-help {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 14px;
+    color: #52606d;
+    background: #f5f7fa;
+    border-radius: 12px;
+    font-size: 0.78rem;
+    line-height: 1.45;
+}
+
+.app-help i {
+    flex: 0 0 auto;
+    color: var(--app-primary);
+}
+
+.app-main {
+    width: calc(100% - 256px);
+    min-width: 0;
+    margin-left: 256px;
+}
+
+.app-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    height: 80px;
+    padding: 0 40px;
+    background: var(--app-white);
+    border-bottom: 1px solid var(--app-border);
+}
+
+.app-menu-toggle {
+    display: none;
+    padding: 8px;
+    color: var(--app-navy);
+    background: transparent;
+    border: 0;
+}
+
+.app-search {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: min(100%, 360px);
+    padding: 10px 13px;
+    color: #98a2b3;
+    background: var(--app-background);
+    border-radius: 9px;
+}
+
+.app-search input {
+    width: 100%;
+    color: var(--app-navy);
+    background: transparent;
+    border: 0;
+    outline: 0;
+    font-size: 0.85rem;
+}
+
+.app-topbar__actions {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.app-icon-button {
+    position: relative;
+    display: inline-flex;
+    padding: 7px;
+    color: var(--app-muted);
+    background: transparent;
+    border: 0;
+}
+
+.app-notification-dot {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 6px;
+    height: 6px;
+    background: var(--app-primary);
+    border: 2px solid var(--app-white);
+    border-radius: 50%;
+}
+
+.app-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-left: 18px;
+    border-left: 1px solid var(--app-border);
+}
+
+.app-avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    color: var(--app-primary);
+    background: var(--app-primary-light);
+    border-radius: 50%;
+    font-size: 0.75rem;
+    font-weight: 800;
+}
+
+.app-profile__name {
+    display: block;
+    margin-bottom: 2px;
+    font-size: 0.82rem;
+    font-weight: 700;
+}
+
+.app-profile__role {
+    display: block;
+    color: var(--app-muted);
+    font-size: 0.7rem;
+}
+
+.app-content {
+    max-width: 1500px;
+    padding: 36px 40px 56px;
+    margin: 0 auto;
+}
+
+.app-page-heading {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.app-page-heading h1 {
+    margin: 0 0 7px;
+    font-size: clamp(1.55rem, 2.4vw, 2rem);
+    letter-spacing: -0.03em;
+}
+
+.app-page-heading p {
+    margin: 0;
+    color: var(--app-muted);
+    font-size: 0.9rem;
+}
+
+.app-primary-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 16px;
+    color: var(--app-white);
+    background: var(--app-primary);
+    border: 0;
+    border-radius: 9px;
+    box-shadow: 0 5px 12px rgba(255, 107, 0, 0.2);
+    font-size: 0.82rem;
+    font-weight: 700;
+}
+
+.app-primary-button:hover {
+    background: #e55f00;
+}
+
+.app-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.app-card {
+    background: var(--app-white);
+    border: 1px solid var(--app-border);
+    border-radius: var(--app-radius);
+    box-shadow: var(--app-shadow);
+}
+
+.app-summary-card {
+    padding: 20px;
+}
+
+.app-summary-card__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 19px;
+}
+
+.app-summary-card__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+}
+
+.app-summary-card__icon.orange { color: var(--app-primary); background: var(--app-primary-light); }
+.app-summary-card__icon.blue { color: var(--app-blue); background: #eff6ff; }
+.app-summary-card__icon.green { color: var(--app-green); background: #ecfdf5; }
+.app-summary-card__icon.purple { color: var(--app-purple); background: #f5f3ff; }
+
+.app-summary-card__label {
+    color: var(--app-muted);
+    font-size: 0.78rem;
+    font-weight: 600;
+}
+
+.app-summary-card__value {
+    margin: 0 0 7px;
+    font-size: 1.7rem;
+    letter-spacing: -0.04em;
+}
+
+.app-summary-card__change {
+    color: var(--app-green);
+    font-size: 0.72rem;
+    font-weight: 600;
+}
+
+.app-dashboard-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(300px, 0.8fr);
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.app-section-card {
+    padding: 22px;
+}
+
+.app-section-card__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.app-section-card__header h2 {
+    margin: 0;
+    font-size: 1rem;
+}
+
+.app-section-card__header p {
+    margin: 5px 0 0;
+    color: var(--app-muted);
+    font-size: 0.78rem;
+}
+
+.app-section-link {
+    color: var(--app-primary);
+    background: transparent;
+    border: 0;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.app-workout-list,
+.app-athlete-list,
+.app-race-list {
+    display: grid;
+    gap: 5px;
+}
+
+.app-workout {
+    display: grid;
+    grid-template-columns: 42px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 13px;
+    padding: 11px 0;
+    border-bottom: 1px solid #f0f1f3;
+}
+
+.app-workout:last-child,
+.app-athlete:last-child,
+.app-race:last-child {
+    border-bottom: 0;
+}
+
+.app-workout__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    color: var(--app-primary);
+    background: var(--app-primary-light);
+    border-radius: 10px;
+}
+
+.app-workout__title,
+.app-athlete__name,
+.app-race__name {
+    display: block;
+    margin-bottom: 4px;
+    overflow: hidden;
+    color: var(--app-navy);
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.app-workout__meta,
+.app-athlete__meta,
+.app-race__meta {
+    display: block;
+    color: var(--app-muted);
+    font-size: 0.7rem;
+}
+
+.app-status {
+    display: inline-flex;
+    padding: 5px 8px;
+    border-radius: 999px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.app-status.completed { color: #047857; background: #ecfdf5; }
+.app-status.planned { color: #1d4ed8; background: #eff6ff; }
+.app-status.pending { color: #b45309; background: #fffbeb; }
+
+.app-workout__toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 5px;
+    padding: 0;
+    color: var(--app-primary);
+    background: transparent;
+    border: 0;
+    font-size: 0.68rem;
+    font-weight: 700;
+}
+
+.app-athlete {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    padding: 10px 0;
+    border-bottom: 1px solid #f0f1f3;
+}
+
+.app-athlete__avatar {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    color: var(--app-primary);
+    background: var(--app-primary-light);
+    border-radius: 50%;
+    font-size: 0.65rem;
+    font-weight: 800;
+}
+
+.app-athlete__data {
+    min-width: 0;
+    flex: 1;
+}
+
+.app-athlete__progress {
+    width: 70px;
+}
+
+.app-progress {
+    height: 5px;
+    margin-bottom: 4px;
+    overflow: hidden;
+    background: #eef0f2;
+    border-radius: 999px;
+}
+
+.app-progress span {
+    display: block;
+    height: 100%;
+    background: var(--app-green);
+    border-radius: inherit;
+}
+
+.app-athlete__percent {
+    color: var(--app-muted);
+    font-size: 0.65rem;
+    text-align: right;
+}
+
+.app-race {
+    display: grid;
+    grid-template-columns: 50px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 11px;
+    padding: 10px 0;
+    border-bottom: 1px solid #f0f1f3;
+}
+
+.app-race__date {
+    padding: 7px 4px;
+    color: var(--app-primary);
+    background: var(--app-primary-light);
+    border-radius: 8px;
+    font-size: 0.65rem;
+    font-weight: 800;
+    text-align: center;
+}
+
+.app-race__athletes {
+    color: var(--app-muted);
+    font-size: 0.68rem;
+    text-align: right;
+}
+
+.app-empty {
+    padding: 24px 10px;
+    color: var(--app-muted);
+    text-align: center;
+    font-size: 0.82rem;
+}
+
+.app-toast {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 30;
+    max-width: 320px;
+    padding: 13px 16px;
+    color: var(--app-white);
+    background: var(--app-navy);
+    border-radius: 10px;
+    box-shadow: var(--app-shadow);
+    font-size: 0.8rem;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(10px);
+    transition: 180ms ease;
+}
+
+.app-toast.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+@media (max-width: 1100px) {
+    .app-summary-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .app-dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .app-sidebar {
+        transform: translateX(-100%);
+        transition: transform 200ms ease;
+    }
+
+    .app-sidebar.is-open {
+        transform: translateX(0);
+        box-shadow: 12px 0 30px rgba(16, 24, 40, 0.12);
+    }
+
+    .app-main {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    .app-topbar {
+        height: 68px;
+        padding: 0 18px;
+    }
+
+    .app-menu-toggle {
+        display: inline-flex;
+    }
+
+    .app-search {
+        display: none;
+    }
+
+    .app-profile {
+        padding-left: 0;
+        border-left: 0;
+    }
+
+    .app-profile__data {
+        display: none;
+    }
+
+    .app-content {
+        padding: 26px 18px 40px;
+    }
+
+    .app-page-heading {
+        align-items: flex-start;
+        flex-direction: column;
+        margin-bottom: 22px;
+    }
+
+    .app-page-heading .app-primary-button {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .app-summary-grid {
+        gap: 10px;
+    }
+
+    .app-summary-card {
+        padding: 14px;
+    }
+
+    .app-summary-card__value {
+        font-size: 1.4rem;
+    }
+
+    .app-section-card {
+        padding: 16px;
+    }
+
+    .app-toast {
+        right: 16px;
+        bottom: 16px;
+        left: 16px;
+        max-width: none;
+    }
+
+    .app-workout {
+        grid-template-columns: 36px minmax(0, 1fr);
+    }
+
+    .app-workout__icon {
+        width: 36px;
+        height: 36px;
+    }
+
+    .app-workout > .app-status {
+        grid-column: 2;
+        justify-self: start;
+    }
+}

@@ -5,16 +5,20 @@ export default class Faqs extends HttpClientBase {
         return this.get("/faqs");
     }
 
+    async listAllAdmin() {
+        return this.get("/faqs/admin/list");
+    }
+
     async listById(id) {
         return this.get("/faqs/:id", { id });
     }
 
     async insert(data) {
-        return this.post("/faqs", data);
+        return this.postForm("/faqs", data);
     }
 
     async update(id, data) {
-        return this.put("/faqs/:id", data, { id });
+        return this.putForm("/faqs/:id", data, { id });
     }
 
     async remove(id) {
