@@ -1,5 +1,333 @@
 # Exercícios — Web Services
 
+
+# Trabalho — Etapas de JavaScript
+
+As etapas a seguir devem ser realizadas sobre o sistema desenvolvido pela equipe.
+O objetivo não é apenas fazer uma chamada HTTP funcionar, mas demonstrar a
+separação entre interface, classes JavaScript, API REST e banco de dados.
+
+## SE2 — Etapa 05 — Integração do backend com o frontend
+
+### Objetivo
+
+Integrar as telas do frontend ao web service da equipe, substituindo dados
+estáticos e chamadas improvisadas por requisições assíncronas para a API.
+Parte-se do princípio de que as rotas do backend já estão prontas e foram
+entregues nas etapas anteriores do trabalho. As regras de negócio, validações,
+autenticação, autorização e formatos de resposta já definidos nessas etapas
+devem ser respeitados nesta integração.
+
+### Premissas e fonte de consulta
+
+Não é necessário criar ou alterar as rotas nesta etapa. Antes de iniciar o
+frontend, consulte a pasta `api/` — especialmente `api/exercicios.md` e os
+controllers — para obter informações sobre:
+
+- endpoints, métodos HTTP, parâmetros e corpos das requisições;
+- formato das respostas, mensagens e códigos HTTP;
+- autenticação, autorização e perfis de acesso;
+- comportamento de exclusão lógica, quando aplicável.
+
+As regras definidas nas etapas anteriores continuam sendo a referência
+oficial. Se houver divergência entre a tela e a API, adapte o frontend ao
+contrato já definido; não crie uma regra paralela no cliente.
+
+### Cadastro e login de usuários
+
+O frontend também deve integrar o fluxo completo de autenticação de usuários:
+
+1. Implemente o cadastro com formulário e `POST` para a rota de registro da
+   API. Valide no frontend os campos conforme o contrato já definido. O
+   backend continua responsável pela validação final e pelo armazenamento
+   seguro da senha; nunca salve ou retorne a senha em texto puro no frontend.
+2. Implemente o login com formulário e a rota de autenticação da API. O
+   frontend deve enviar as credenciais, interpretar a resposta e informar
+   falhas de validação, credenciais inválidas e indisponibilidade do serviço.
+3. Após o login, armazene o token e os dados mínimos da sessão de forma
+   consistente com o projeto. As requisições protegidas devem enviá-lo no
+   cabeçalho HTTP `Authorization`, usando o esquema de autenticação seguido do
+   token.
+4. Proteja as telas autenticadas no frontend e valide o token, o usuário e suas
+   permissões no backend. O frontend não pode ser a única barreira de acesso.
+5. Implemente logout, removendo a sessão local, e redirecione o usuário não
+   autenticado para a tela de login. Não exponha tokens ou senhas em mensagens,
+   logs ou elementos da interface.
+
+O fluxo mínimo a ser demonstrado é:
+
+```text
+Cadastro → resposta da API → Login → token → acesso a rota protegida → Logout
+```
+
+As rotas de cadastro e login, o formato das credenciais, o formato do token e
+os perfis autorizados devem ser documentados junto às demais rotas da etapa.
+
+### Token e `localStorage`
+
+Após um login bem-sucedido, a API retorna o token dentro de `data.token`.
+Esse token representa a sessão do usuário; ele não substitui a validação do
+backend e não deve ser confundido com a senha. Para esta atividade, armazene o
+token no `localStorage` por meio da classe compartilhada
+`views/assets/_common/scripts/storage.js`, em vez de espalhar chaves e
+chamadas de armazenamento pelos scripts:
+
+```js
+saveSession(token, user = null) {
+    localStorage.setItem(this.#tokenKey, token);
+
+    if (user) {
+        localStorage.setItem(this.#userKey, JSON.stringify(user));
+    }
+}
+
+getToken() {
+    return localStorage.getItem(this.#tokenKey);
+}
+```
+
+No repositório, `SessionStorage` cria chaves diferentes para cada área. Por
+exemplo, o escopo padrão usa `running_power_token` e o escopo `runner` usa
+`running_power_runner_token`. Isso evita que as sessões de usuário, corredor e
+administrador sobrescrevam umas às outras. O logout deve usar a operação já
+disponível na mesma classe:
+
+```js
+clearSession() {
+    localStorage.removeItem(this.#tokenKey);
+    localStorage.removeItem(this.#userKey);
+}
+```
+
+O exemplo de login em `views/assets/public/scripts/auth-modal.js` obtém o token
+da resposta e salva a sessão somente depois de verificar a resposta:
+
+```js
+const token = result.data?.token;
+if (!token) {
+    this.showFeedback("O servidor não retornou uma sessão válida.", "error");
+    return;
+}
+
+this.storage.saveSession(token, result.data);
+```
+
+Nas chamadas protegidas, leia o token do armazenamento e configure o cliente
+HTTP. O fluxo usado em `views/assets/runner/scripts/runner-app.js` é:
+
+```js
+const token = this.storage.getToken();
+this.api.forEach((client) => client.setAuthToken(token));
+```
+
+`HttpClientBase` é responsável por transformar esse token no cabeçalho
+`Authorization` usando o esquema Bearer. No backend,
+`api/source/Controller/Api.php` aceita esse cabeçalho, remove o prefixo do
+esquema, decodifica o JWT e verifica o tipo de usuário antes de liberar uma
+rota:
+
+```php
+$token = $header['Authorization'] ?? $header['authorization'] ?? null;
+
+if (str_starts_with($token, 'Bearer ')) {
+    $token = substr($token, 7);
+}
+
+$jwtToken = $jwt->decode($token);
+```
+
+O frontend pode bloquear a navegação com `AuthGuard`, mas isso é apenas uma
+melhoria de experiência. A segurança real acontece no backend, que deve
+validar assinatura, expiração, usuário e permissão do token em toda rota
+protegida.
+
+`localStorage` é utilizado aqui por ser o padrão didático do projeto e
+permanece após o fechamento do navegador. Ele pode ser lido por JavaScript da
+origem da aplicação; portanto, nunca armazene senha, dados sensíveis ou o
+segredo usado para assinar o JWT. Em uma aplicação de produção, avalie uma
+sessão em cookie `HttpOnly`, `Secure` e com política `SameSite` adequada.
+
+Use este formato de resposta:
+
+```json
+{
+  "code": 200,
+  "type": "success",
+  "status": "success",
+  "message": "Operação realizada com sucesso",
+  "data": {}
+}
+```
+
+Em caso de erro, use `type: "error"` e `data: null`. O código deve ser
+compatível com o status HTTP: `201` para criação, `400` para dados inválidos,
+`401` para ausência de autenticação, `403` para falta de permissão, `404` para
+recurso inexistente e `500` para falha interna.
+
+No frontend:
+
+1. Use `async/await`, trate respostas de sucesso e erro e atualize a interface
+   sem recarregamento desnecessário.
+2. Implemente o CRUD completo da entidade principal e de duas entidades
+   relacionadas: cadastro (`POST`), listagem/detalhe (`GET`), edição (`PUT`)
+   e exclusão ou inativação confirmada (`DELETE`).
+3. Mostre estados de carregamento, lista vazia, sucesso e erro. Não mostre
+   sucesso quando a API retornar erro.
+4. Não use `onclick`, jQuery ou `fetch` espalhado pelos scripts de tela.
+   Registre eventos em JavaScript e mantenha a comunicação HTTP em classes
+   reutilizáveis. A refatoração completa para essas classes será exigida na
+   Etapa 06.
+5. Implemente cadastro, login e logout, exibindo o estado autenticado e
+   bloqueando o acesso às telas protegidas quando não houver sessão válida.
+6. Entregue evidências e uma tabela com as operações CRUD, autenticação,
+   rotas e resultados.
+
+### Critérios de aceite
+
+A etapa estará concluída quando o CRUD puder ser executado pelas telas, o
+cadastro e o login criarem uma sessão válida, uma rota protegida exigir
+autenticação, o logout encerrar a sessão, os dados permanecerem após atualizar
+a página e as respostas `2xx`, `4xx` e `5xx` produzirem mensagens
+compreensíveis. Mocks devem ser identificados e não podem substituir
+silenciosamente uma rota integrada.
+
+---
+
+## SE2 — Etapa 06 — JavaScript orientado a objetos
+
+### Objetivo
+
+Refatorar o frontend da Etapa 05 para aplicar POO clássica e POO prototípica,
+sem alterar o comportamento do sistema. Demonstre a diferença entre classes
+declaradas com `class` e objetos construídos a partir de protótipos.
+
+Crie uma branch chamada `javascript-poo` a partir da versão estável anterior.
+Consulte também os exemplos de POO clássica e prototípica em
+`C:\Projects\docker-dev-env\public\inf-3am-26\poo-javascript`.
+
+### Parte A — POO clássica com `class`
+
+Crie **uma classe JavaScript para cada entidade que o frontend utiliza**, no
+mínimo a entidade principal e as duas entidades do CRUD. Cada classe deve ter:
+
+- propriedades privadas ou protegidas quando fizer sentido;
+- construtor;
+- getters e setters, com validações simples;
+- métodos principais da entidade;
+- conversão entre payload da API e objeto JavaScript.
+
+Exemplo:
+
+```js
+export default class Product {
+    #id;
+    #name;
+    #price;
+
+    constructor({ id = null, name = "", price = 0 } = {}) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+    }
+
+    get id() {
+        return this.#id;
+    }
+
+    set id(value) {
+        this.#id = value === null ? null : Number(value);
+    }
+
+    get name() {
+        return this.#name;
+    }
+
+    set name(value) {
+        if (typeof value !== "string" || value.trim() === "") {
+            throw new TypeError("O nome é obrigatório");
+        }
+        this.#name = value.trim();
+    }
+
+    get price() {
+        return this.#price;
+    }
+
+    set price(value) {
+        const number = Number(value);
+        if (!Number.isFinite(number) || number < 0) {
+            throw new RangeError("O preço deve ser um número não negativo");
+        }
+        this.#price = number;
+    }
+
+    toJSON() {
+        return { id: this.id, name: this.name, price: this.price };
+    }
+}
+```
+
+Crie também classes de serviço HTTP que estendam:
+
+```text
+views/assets/_common/classes/HttpClientBase.js
+```
+
+Reaproveite os métodos `get`, `post`, `put` e `delete`, a URL base, os
+cabeçalhos e a autenticação. Uma classe como `ProductService` deve expor
+`list`, `find`, `create`, `update` e `remove`. Os scripts de tela chamam o
+serviço; não chamam `fetch` diretamente. O serviço não deve manipular HTML.
+
+Crie ou adapte uma classe de usuários para cadastro, login e atualização de
+perfil usando as rotas reais. O método do login deve corresponder ao backend;
+não presuma que login seja `GET`.
+
+### Parte B — POO prototípica
+
+Implemente pelo menos **duas funcionalidades reutilizáveis** usando
+protótipos, sem substituí-las por uma segunda classe `class`. São exemplos:
+
+- objeto `Toast` criado com `Object.create`;
+- `FormController` para serializar, validar e limpar formulários;
+- `CrudController` para listar, editar e confirmar exclusão;
+- adaptador para transformar respostas da API em entidades.
+
+Os métodos compartilhados devem ficar no protótipo, não ser recriados em cada
+objeto. Demonstre dois objetos criados a partir do mesmo protótipo e explique
+no README o que é compartilhado.
+
+### Toast e tratamento de respostas
+
+Crie um componente reutilizável para as mensagens da API:
+
+| `type` | Aparência |
+|---|---|
+| `success` | verde |
+| `warning` | amarelo |
+| `error` | vermelho |
+
+Ele deve aceitar respostas com ou sem `data`, não exibir a `data` inteira
+como mensagem e tratar uma resposta inesperada sem silenciar o erro. Use a
+grafia `success`.
+
+### Entrega e avaliação
+
+Entregue a branch `javascript-poo` com:
+
+- uma classe de entidade para cada entidade usada;
+- construtor, getters, setters e métodos principais;
+- serviços HTTP derivados de `HttpClientBase`;
+- CRUD da entidade principal e de duas entidades integrado às rotas reais;
+- duas funcionalidades baseadas em protótipos;
+- toast e estados de carregamento, sucesso e erro;
+- README com arquitetura e instruções de execução;
+- evidências do CRUD e explicação de encapsulamento, herança, composição e
+  protótipos.
+
+Será avaliado o funcionamento integrado, a separação de responsabilidades, a
+reutilização dos protótipos e serviços, a validação, a clareza e a
+correspondência entre frontend, backend e banco. Não basta criar classes sem
+utilizá-las nas telas.
 ## Padrão de Retorno da API
 
 Todos os endpoints deste sistema devem seguir o padrão de resposta JSON abaixo:
