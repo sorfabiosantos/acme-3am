@@ -30,7 +30,7 @@ export default class Users extends HttpClientBase {
     }
 
     async update(data) {
-        return this.put("/users/update", data);
+        return this.putForm("/users/update", data);
     }
 
     async getMe() {

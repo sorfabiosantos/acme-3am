@@ -89,6 +89,9 @@ Na área do assessor, `profile.js` carrega os dados pela rota autenticada
 `GET /users/me`, atualiza os dados cadastrais em `PUT /users/update` e envia a
 foto separadamente para `POST /users/photo`. A foto aceita JPG, PNG e WEBP de
 até 5 MiB; a API valida o conteúdo do arquivo antes de armazená-lo.
+O banco guarda o caminho relativo da foto (`uploads/users/...`), e a API retorna
+uma URL completa para uso na interface. URLs absolutas já existentes continuam
+sendo aceitas.
 
 ---
 

@@ -70,5 +70,40 @@ $usuario = new User();
 
 ---
 
-> 📚 Acesse cada subpasta para entender sua responsabilidade em detalhes.
+### 📤 Upload de imagens e arquivos
 
+A classe `Source\Support\Upload`, localizada em `Support/Upload.php`, valida e
+armazena um arquivo enviado pelo PHP. O construtor recebe a pasta de destino;
+os limites de tamanho são em bytes e os tipos aceitos são MIME types.
+
+| Propriedade | Padrão |
+|---|---|
+| `maxFileSize` | 10 MiB |
+| `maxImageSize` | 5 MiB |
+| `allowedFileTypes` | PDF, ZIP, DOCX, XLSX e PPTX |
+| `allowedImageTypes` | JPEG, PNG e WEBP |
+
+Os métodos `image()` e `file()` recebem o item correspondente de `$_FILES` e
+retornam o nome aleatório gravado na pasta configurada. Erros de validação ou
+gravação são informados por `RuntimeException`.
+
+```php
+use Source\Support\Upload;
+
+$uploadDirectory = dirname(__DIR__, 3) . DIRECTORY_SEPARATOR . "uploads" . DIRECTORY_SEPARATOR . "users";
+$upload = new Upload($uploadDirectory);
+$filename = $upload->image($_FILES["photo"]);
+
+// Persista um caminho relativo; gere uma URL completa apenas para a resposta da API.
+$photoPath = "uploads/users/" . $filename;
+$photoUrl = url($photoPath);
+```
+
+O tipo do conteúdo é verificado com `fileinfo`; para imagens também é usado
+`getimagesize`. Configure `upload_max_filesize` e `post_max_size` no PHP de
+acordo com os limites escolhidos. Prefira uma pasta que não permita execução de
+scripts enviados pelo usuário.
+
+---
+
+> 📚 Acesse cada subpasta para entender sua responsabilidade em detalhes.

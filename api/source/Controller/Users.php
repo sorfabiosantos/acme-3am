@@ -73,7 +73,7 @@ class Users extends Api
         $response = [
             "id" => $user->getId(),
             "name" => $user->getName(),
-            "photo" => $user->getPhoto(),
+            "photo" => $this->photoUrl($user->getPhoto()),
             "type_id" => $user->getTypeId(),
             "token" => $user->getToken(),
         ];
@@ -117,7 +117,7 @@ class Users extends Api
             "id" => $user->getId(),
             "name" => $user->getName(),
             "email" => $user->getEmail(),
-            "photo" => $user->getPhoto(),
+            "photo" => $this->photoUrl($user->getPhoto()),
             "type_id" => $user->getTypeId(),
             "token" => $user->getToken()
         ]);
@@ -149,7 +149,7 @@ class Users extends Api
         $response = [
             "id" => $user->getId(),
             "name" => $user->getName(),
-            "photo" => $user->getPhoto(),
+            "photo" => $this->photoUrl($user->getPhoto()),
             "type_id" => $user->getTypeId(),
             "token" => $user->getToken(),
         ];
@@ -216,7 +216,7 @@ class Users extends Api
             "id" => $user->getId(),
             "name" => $user->getName(),
             "email" => $user->getEmail(),
-            "photo" => $user->getPhoto(),
+            "photo" => $this->photoUrl($user->getPhoto()),
             "token" => $user->getToken(),
         ]);
     }
@@ -238,7 +238,7 @@ class Users extends Api
             "id" => $user->getId(),
             "name" => $user->getName(),
             "email" => $user->getEmail(),
-            "photo" => $user->getPhoto(),
+            "photo" => $this->photoUrl($user->getPhoto()),
         ]);
     }
 
@@ -290,8 +290,9 @@ class Users extends Api
             return;
         }
 
-        $photoUrl = url("uploads/users/" . $filename);
-        if (!$user->updatePhoto($this->userAuthId, $photoUrl)) {
+        $photoPath = "uploads/users/" . $filename;
+        $photoUrl = $this->photoUrl($photoPath);
+        if (!$user->updatePhoto($this->userAuthId, $photoPath)) {
             $savedPath = $uploadDirectory . DIRECTORY_SEPARATOR . $filename;
             if (is_file($savedPath) && !unlink($savedPath)) {
                 error_log("Não foi possível remover a foto enviada após falha ao atualizar o perfil.");
@@ -307,6 +308,19 @@ class Users extends Api
         ]);
     }
 
+    private function photoUrl(?string $photoPath): ?string
+    {
+        if ($photoPath === null || trim($photoPath) === "") {
+            return null;
+        }
+
+        if (filter_var($photoPath, FILTER_VALIDATE_URL)) {
+            return $photoPath;
+        }
+
+        return url(ltrim($photoPath, "/"));
+    }
+
     private function deletePreviousPhoto(?string $photoUrl, string $uploadDirectory): void
     {
         if ($photoUrl === null || $photoUrl === "") {
@@ -319,13 +333,20 @@ class Users extends Api
             return;
         }
 
-        $managedPrefix = rtrim($uploadsUrlPath, "/") . "/";
-        if (!str_starts_with($photoPath, $managedPrefix)) {
-            return;
+        $normalizedPath = ltrim($photoPath, "/");
+        $managedPrefixes = ["uploads/users/", ltrim(rtrim($uploadsUrlPath, "/") . "/", "/")];
+        $filename = null;
+        foreach ($managedPrefixes as $managedPrefix) {
+            if ($managedPrefix !== "" && str_starts_with($normalizedPath, $managedPrefix)) {
+                $candidate = substr($normalizedPath, strlen($managedPrefix));
+                if (preg_match('/\A[a-f0-9]{32}\.(?:jpg|png|webp)\z/', $candidate)) {
+                    $filename = $candidate;
+                    break;
+                }
+            }
         }
 
-        $filename = substr($photoPath, strlen($managedPrefix));
-        if (!preg_match('/\A[a-f0-9]{32}\.(?:jpg|png|webp)\z/', $filename)) {
+        if ($filename === null) {
             return;
         }
 

@@ -8,6 +8,7 @@ export default class Profile {
     }
 
     init() {
+        // Conecta os formulários e carrega os dados atuais do assessor.
         this.users.setAuthToken(this.storage.getToken());
         document.querySelector("[data-profile-form]")?.addEventListener("submit", (event) => {
             this.updateProfile(event);
@@ -23,6 +24,7 @@ export default class Profile {
     }
 
     async loadProfile() {
+        // Busca o perfil na API e informa na tela se a operação falhar.
         try {
             const response = await this.users.getMe();
             if (response?.status !== "success" || !response.data) {
@@ -36,6 +38,7 @@ export default class Profile {
     }
 
     renderProfile(user) {
+        // Preenche o formulário e sincroniza a sessão e os avatares.
         const form = document.querySelector("[data-profile-form]");
         form.elements.namedItem("name").value = user.name || "";
         form.elements.namedItem("email").value = user.email || "";
@@ -53,6 +56,7 @@ export default class Profile {
     async updateProfile(event) {
         event.preventDefault();
 
+        // Só permite trocar a senha quando a atual e a nova forem informadas.
         const form = event.currentTarget;
         const button = form.querySelector("[type='submit']");
         const currentPassword = form.elements.namedItem("current_password").value;
@@ -100,6 +104,7 @@ export default class Profile {
     async updatePhoto(event) {
         event.preventDefault();
 
+        // Valida o arquivo no navegador antes de enviá-lo à API.
         const form = event.currentTarget;
         const button = form.querySelector("[type='submit']");
         const input = form.elements.namedItem("photo");
@@ -145,6 +150,7 @@ export default class Profile {
     }
 
     previewPhoto(photo) {
+        // Cria uma prévia local; o arquivo só é enviado ao salvar o formulário.
         this.revokePhotoPreview();
         if (!photo) {
             const user = this.storage.getUser() || {};
@@ -157,6 +163,7 @@ export default class Profile {
     }
 
     showProfilePhoto(photo) {
+        // Mostra as iniciais como alternativa se a foto estiver ausente ou falhar.
         const image = document.querySelector("[data-profile-photo]");
         const initials = document.querySelector("[data-profile-initials]");
         const photoUrl = this.getSafePhotoUrl(photo);
@@ -180,6 +187,7 @@ export default class Profile {
     }
 
     refreshHeader(user) {
+        // Atualiza nome e foto no cabeçalho sem recarregar a página.
         const initials = document.querySelector("[data-user-initials]");
         initials.textContent = this.getInitials(user.name);
         document.querySelector("[data-user-name]").textContent = user.name || "Assessor";
@@ -206,6 +214,7 @@ export default class Profile {
     }
 
     storeUser(changes) {
+        // Mescla os dados novos com a sessão atual para não perder outras informações.
         const user = { ...(this.storage.getUser() || {}), ...changes };
         const token = user.token || this.storage.getToken();
         if (token) {
@@ -219,6 +228,7 @@ export default class Profile {
     }
 
     getSafePhotoUrl(photo) {
+        // Restringe imagens a URLs HTTP(S) ou à prévia local do navegador.
         if (typeof photo !== "string" || photo === "") {
             return null;
         }
@@ -232,6 +242,7 @@ export default class Profile {
     }
 
     revokePhotoPreview() {
+        // Libera a URL temporária criada para a prévia da imagem.
         if (this.photoObjectUrl) {
             URL.revokeObjectURL(this.photoObjectUrl);
             this.photoObjectUrl = null;
