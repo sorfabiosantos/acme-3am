@@ -33,6 +33,8 @@ $route->put("/update","Users:update"); // update de usuário comum
 $route->post("/register-admin","Users:registerAdmin"); // Registrar usuário admin NÃO IMPLEMENTADO
 $route->post("/login-admin","Users:authAdmin"); // login de usuário admin
 $route->put("/update-admin","Users:updateAdmin"); // update de usuário admin
+$route->get("/me","Users:me"); // perfil do assessor autenticado
+$route->post("/photo","Users:uploadPhoto"); // upload de foto de usuário
 $route->group(null);
 
 $route->group("/address");

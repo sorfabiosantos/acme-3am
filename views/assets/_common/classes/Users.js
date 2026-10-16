@@ -33,6 +33,14 @@ export default class Users extends HttpClientBase {
         return this.put("/users/update", data);
     }
 
+    async getMe() {
+        return this.get("/users/me");
+    }
+
+    async uploadPhoto(data) {
+        return this.post("/users/photo", data);
+    }
+
     async updateAdmin(data) {
         return this.put("/users/update-admin", data);
     }

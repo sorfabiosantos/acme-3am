@@ -15,8 +15,44 @@ parte** do projeto. São funções utilitárias que facilitam tarefas repetitiva
 
 ```
 Support/
-└── Helpers.php    ← Funções auxiliares globais
+├── Helpers.php    ← Funções auxiliares globais
+└── Upload.php     ← Validação e armazenamento de arquivos enviados
 ```
+
+### Upload — imagens e arquivos
+
+`Source\Support\Upload` recebe o caminho da pasta de destino no construtor.
+As configurações são propriedades públicas; os limites usam bytes e os tipos
+permitidos são MIME types em listas independentes:
+
+| Propriedade | Padrão |
+|---|---|
+| `maxFileSize` | 10 MiB |
+| `maxImageSize` | 5 MiB |
+| `allowedFileTypes` | PDF, ZIP, DOCX, XLSX e PPTX |
+| `allowedImageTypes` | JPEG, PNG e WEBP |
+
+```php
+use Source\Support\Upload;
+
+$upload = new Upload(__DIR__ . '/../../uploads');
+$upload->maxImageSize = 2 * 1024 * 1024;
+$upload->allowedImageTypes = ['image/jpeg', 'image/png'];
+
+$storedImageName = $upload->image($_FILES['image']);
+$storedFileName = $upload->file($_FILES['document']);
+```
+
+Os métodos recebem o item de `$_FILES` e retornam o nome aleatório salvo na
+pasta configurada. Em caso de erro, lançam `RuntimeException`; o controller
+deve capturá-la e produzir a resposta HTTP apropriada. O tipo é identificado
+pelo conteúdo com `fileinfo` (e imagens também são verificadas com
+`getimagesize`), não pela extensão ou pelo nome original enviado pelo cliente.
+
+Configure também `upload_max_filesize` e `post_max_size` no PHP para que os
+limites do servidor sejam compatíveis com os limites desta classe. Em produção,
+prefira armazenar os arquivos fora da pasta pública e servir downloads por uma
+rota autorizada.
 
 ---
 
@@ -93,4 +129,3 @@ function isMethod(string $method): bool
 
 > 💡 **Dica:** Helpers são funções **genéricas e reutilizáveis**. Se você perceber que está
 > repetindo o mesmo código em vários lugares, considere criar um helper!
-

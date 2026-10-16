@@ -200,6 +200,8 @@ button {
 }
 
 .app-avatar {
+    position: relative;
+    overflow: hidden;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -210,6 +212,14 @@ button {
     border-radius: 50%;
     font-size: 0.75rem;
     font-weight: 800;
+}
+
+.app-avatar img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .app-profile__name {
@@ -551,12 +561,188 @@ button {
     transform: translateY(0);
 }
 
+.app-profile-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+    gap: 20px;
+}
+
+.app-profile-card {
+    min-width: 0;
+}
+
+.app-profile-card .app-section-card__header > i {
+    flex: 0 0 auto;
+    color: var(--app-primary);
+}
+
+.app-profile-form {
+    display: grid;
+    gap: 20px;
+}
+
+.app-profile-form__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.app-profile-form label {
+    display: grid;
+    gap: 8px;
+    color: var(--app-navy);
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.app-profile-form input:not([type="file"]) {
+    width: 100%;
+    min-height: 44px;
+    padding: 10px 12px;
+    color: var(--app-navy);
+    background: var(--app-white);
+    border: 1px solid var(--app-border);
+    border-radius: 9px;
+    font-size: 0.85rem;
+}
+
+.app-profile-form input:focus {
+    border-color: var(--app-primary);
+    outline: 3px solid rgba(255, 107, 0, 0.12);
+}
+
+.app-profile-password {
+    display: grid;
+    gap: 14px;
+    padding: 16px;
+    border: 1px solid var(--app-border);
+    border-radius: 12px;
+}
+
+.app-profile-password legend {
+    padding: 0 5px;
+    font-size: 0.82rem;
+    font-weight: 700;
+}
+
+.app-profile-password legend span,
+.app-profile-password small {
+    color: var(--app-muted);
+    font-size: 0.72rem;
+    font-weight: 400;
+}
+
+.app-profile-form__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+}
+
+.app-profile-feedback {
+    min-height: 1.2em;
+    margin: 0;
+    color: var(--app-muted);
+    font-size: 0.78rem;
+}
+
+.app-profile-feedback.is-error { color: #b42318; }
+.app-profile-feedback.is-success { color: #047857; }
+
+.app-profile-photo {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 8px 0 24px;
+}
+
+.app-profile-photo__preview {
+    position: relative;
+    overflow: hidden;
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    width: 88px;
+    height: 88px;
+    color: var(--app-primary);
+    background: var(--app-primary-light);
+    border-radius: 50%;
+    font-size: 1.2rem;
+    font-weight: 800;
+}
+
+.app-profile-photo__preview img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.app-profile-photo strong {
+    font-size: 0.84rem;
+}
+
+.app-profile-photo p {
+    margin: 6px 0 0;
+    color: var(--app-muted);
+    font-size: 0.75rem;
+    line-height: 1.5;
+}
+
+.app-profile-file-label {
+    color: var(--app-navy);
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.app-profile-file-input {
+    display: block;
+    width: 100%;
+    min-height: 48px;
+    padding: 6px;
+    color: var(--app-navy);
+    background: var(--app-white);
+    border: 1px solid var(--app-border);
+    border-radius: 9px;
+    font-size: 0.82rem;
+}
+
+.app-profile-file-input::file-selector-button {
+    min-height: 34px;
+    margin-right: 12px;
+    padding: 7px 12px;
+    color: var(--app-primary);
+    background: var(--app-primary-light);
+    border: 0;
+    border-radius: 7px;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 150ms ease;
+}
+
+.app-profile-file-input::file-selector-button:hover {
+    background: #ffe6d4;
+}
+
+.app-profile-file-input:focus-visible {
+    border-color: var(--app-primary);
+    outline: 3px solid rgba(255, 107, 0, 0.12);
+}
+
 @media (max-width: 1100px) {
     .app-summary-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .app-dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .app-profile-grid {
         grid-template-columns: 1fr;
     }
 }
@@ -637,6 +823,15 @@ button {
         bottom: 16px;
         left: 16px;
         max-width: none;
+    }
+
+    .app-profile-form__grid {
+        grid-template-columns: 1fr;
+    }
+
+    .app-profile-form__footer {
+        align-items: stretch;
+        flex-direction: column;
     }
 
     .app-workout {

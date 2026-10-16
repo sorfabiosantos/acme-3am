@@ -17,7 +17,7 @@ sistema após fazer login.
 É a área onde o usuário comum (não administrador) acessa funcionalidades como:
 
 - 🏠 Dashboard pessoal
-- 👤 Editar seu perfil
+- 👤 Editar nome, e-mail e senha; atualizar a foto em um formulário separado
 - 📝 Criar e gerenciar seus conteúdos
 - ⚙️ Configurações da conta
 - 🔔 Notificações
@@ -85,6 +85,11 @@ async function atualizarPerfil(event) {
 }
 ```
 
+Na área do assessor, `profile.js` carrega os dados pela rota autenticada
+`GET /users/me`, atualiza os dados cadastrais em `PUT /users/update` e envia a
+foto separadamente para `POST /users/photo`. A foto aceita JPG, PNG e WEBP de
+até 5 MiB; a API valida o conteúdo do arquivo antes de armazená-lo.
+
 ---
 
 ### 🔄 Diferença entre `app/` e `admin/`
@@ -99,4 +104,3 @@ async function atualizarPerfil(event) {
 
 > 💡 **Dica:** Separar `app/` de `admin/` permite criar experiências visuais diferentes
 > para cada tipo de usuário.
-

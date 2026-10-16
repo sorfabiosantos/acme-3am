@@ -40,6 +40,10 @@
                     <i data-lucide="bar-chart-3" aria-hidden="true"></i>
                     Relatórios
                 </a>
+                <a class="app-nav__link" href="#profile" data-app-nav="profile">
+                    <i data-lucide="user-round" aria-hidden="true"></i>
+                    Perfil
+                </a>
             </nav>
 
             <div class="app-sidebar__footer">
@@ -77,7 +81,10 @@
                         <span class="app-notification-dot" aria-hidden="true"></span>
                     </button>
                     <div class="app-profile">
-                        <span class="app-avatar" data-user-initials>FS</span>
+                        <span class="app-avatar" data-user-avatar>
+                            <span data-user-initials>FS</span>
+                            <img data-user-photo alt="" hidden>
+                        </span>
                         <span class="app-profile__data">
                             <strong class="app-profile__name" data-user-name>Fábio Santos</strong>
                             <small class="app-profile__role">Assessor de corrida</small>
@@ -86,7 +93,8 @@
                 </div>
             </header>
 
-            <main id="dashboard" class="app-content">
+            <main class="app-main-content">
+            <section id="dashboard" class="app-content" data-app-page="dashboard">
                 <header class="app-page-heading">
                     <div>
                         <h1>Bom dia, <span data-user-first-name>Fábio</span>! 👋</h1>
@@ -156,6 +164,91 @@
                         </div>
                     </section>
                 </div>
+            </section>
+
+            <section id="profile" class="app-content" data-app-page="profile" hidden aria-labelledby="profile-title">
+                <header class="app-page-heading">
+                    <div>
+                        <h1 id="profile-title">Meu perfil</h1>
+                        <p>Atualize seus dados de acesso e sua foto de perfil.</p>
+                    </div>
+                </header>
+
+                <div class="app-profile-grid">
+                    <section class="app-card app-section-card app-profile-card" aria-labelledby="profile-data-title">
+                        <header class="app-section-card__header">
+                            <div>
+                                <h2 id="profile-data-title">Dados pessoais</h2>
+                                <p>Altere seu nome, e-mail ou senha de acesso.</p>
+                            </div>
+                            <i data-lucide="user-round-pen" aria-hidden="true"></i>
+                        </header>
+
+                        <form class="app-profile-form" data-profile-form>
+                            <div class="app-profile-form__grid">
+                                <label>
+                                    Nome completo
+                                    <input type="text" name="name" autocomplete="name" required maxlength="255">
+                                </label>
+                                <label>
+                                    E-mail
+                                    <input type="email" name="email" autocomplete="email" required maxlength="255">
+                                </label>
+                            </div>
+
+                            <fieldset class="app-profile-password">
+                                <legend>Alterar senha <span>(opcional)</span></legend>
+                                <div class="app-profile-form__grid">
+                                    <label>
+                                        Senha atual
+                                        <input type="password" name="current_password" autocomplete="current-password">
+                                    </label>
+                                    <label>
+                                        Nova senha
+                                        <input type="password" name="new_password" autocomplete="new-password" minlength="8">
+                                    </label>
+                                </div>
+                                <small>Preencha os dois campos para trocar a senha. A nova senha deve ter pelo menos 8 caracteres.</small>
+                            </fieldset>
+
+                            <div class="app-profile-form__footer">
+                                <p class="app-profile-feedback" data-profile-feedback role="status" aria-live="polite"></p>
+                                <button class="app-primary-button" type="submit">Salvar dados</button>
+                            </div>
+                        </form>
+                    </section>
+
+                    <section class="app-card app-section-card app-profile-card" aria-labelledby="profile-photo-title">
+                        <header class="app-section-card__header">
+                            <div>
+                                <h2 id="profile-photo-title">Foto do assessor</h2>
+                                <p>Este formulário altera somente sua foto.</p>
+                            </div>
+                            <i data-lucide="image" aria-hidden="true"></i>
+                        </header>
+
+                        <div class="app-profile-photo">
+                            <span class="app-profile-photo__preview" data-profile-photo-preview>
+                                <span data-profile-initials>FS</span>
+                                <img data-profile-photo alt="Foto de perfil do assessor" hidden>
+                            </span>
+                            <div>
+                                <strong>Escolha uma imagem para seu perfil</strong>
+                                <p>Formatos aceitos: JPG, PNG ou WEBP. Tamanho máximo: 5 MB.</p>
+                            </div>
+                        </div>
+
+                        <form class="app-profile-form" data-profile-photo-form>
+                            <label class="app-profile-file-label" for="profile-photo-input">Selecionar foto</label>
+                            <input id="profile-photo-input" class="app-profile-file-input" type="file" name="photo" accept="image/jpeg,image/png,image/webp" required data-profile-photo-input>
+                            <div class="app-profile-form__footer">
+                                <p class="app-profile-feedback" data-profile-photo-feedback role="status" aria-live="polite"></p>
+                                <button class="app-primary-button" type="submit">Atualizar foto</button>
+                            </div>
+                        </form>
+                    </section>
+                </div>
+            </section>
             </main>
         </div>
     </div>

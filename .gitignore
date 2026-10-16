@@ -1,6 +1,8 @@
 /.idea
+/.opencode
 /api/.env
 /storage
+/uploads
 composer.lock
 /avaliacao
 /views/prova-a
